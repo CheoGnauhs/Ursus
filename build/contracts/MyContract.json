@@ -1,0 +1,429 @@
+{
+  "contractName": "MyContract",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "myFunction",
+      "outputs": [
+        {
+          "name": "myNumber",
+          "type": "uint256"
+        },
+        {
+          "name": "myString",
+          "type": "string"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "pure",
+      "type": "function",
+      "signature": "0xc3780a3a"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.5.0+commit.1d4f565a\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":true,\"inputs\":[],\"name\":\"myFunction\",\"outputs\":[{\"name\":\"myNumber\",\"type\":\"uint256\"},{\"name\":\"myString\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"pure\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/Users/TS/Ursus/contracts/MyContract.sol\":\"MyContract\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/TS/Ursus/contracts/MyContract.sol\":{\"keccak256\":\"0x861a063d8c29db6fe5d019ad963017fe92a004e5ebe3086aba57faf617d4aaf0\",\"urls\":[\"bzzr://b6328e6d0db2a92d0e0bf2318d1007cb0443b494ff8907743b90472648de89a5\"]}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b50610151806100206000396000f3fe608060405260043610610041576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff168063c3780a3a14610046575b600080fd5b34801561005257600080fd5b5061005b6100dd565b6040518083815260200180602001828103825283818151815260200191508051906020019080838360005b838110156100a1578082015181840152602081019050610086565b50505050905090810190601f1680156100ce5780820380516001836020036101000a031916815260200191505b50935050505060405180910390f35b60006060615ba08090506040805190810160405280600781526020017f48656c6c6f21250000000000000000000000000000000000000000000000000081525091509150909156fea165627a7a72305820f42b615625a210c037b30a4427cdf94568ef905bff2abf932e44adddad2623170029",
+  "deployedBytecode": "0x608060405260043610610041576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff168063c3780a3a14610046575b600080fd5b34801561005257600080fd5b5061005b6100dd565b6040518083815260200180602001828103825283818151815260200191508051906020019080838360005b838110156100a1578082015181840152602081019050610086565b50505050905090810190601f1680156100ce5780820380516001836020036101000a031916815260200191505b50935050505060405180910390f35b60006060615ba08090506040805190810160405280600781526020017f48656c6c6f21250000000000000000000000000000000000000000000000000081525091509150909156fea165627a7a72305820f42b615625a210c037b30a4427cdf94568ef905bff2abf932e44adddad2623170029",
+  "sourceMap": "34:151:3:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;34:151:3;;;;;;;",
+  "deployedSourceMap": "34:151:3:-;;;;;;;;;;;;;;;;;;;;;;;;60:123;;8:9:-1;5:2;;;30:1;27;20:12;5:2;60:123:3;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;23:1:-1;8:100;33:3;30:1;27:10;8:100;;;99:1;94:3;90:11;84:18;80:1;75:3;71:11;64:39;52:2;49:1;45:10;40:15;;8:100;;;12:14;60:123:3;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;102:13;117:22;159:5;151:25;;;;;;;;;;;;;;;;;;;;;;;;;60:123;;:::o",
+  "source": "pragma solidity >=0.4.22 <0.7.0;\n\ncontract MyContract {\n    function myFunction() public pure returns(uint myNumber, string memory myString) {\n        return (23456, \"Hello!%\");\n    }\n}",
+  "sourcePath": "/Users/TS/Ursus/contracts/MyContract.sol",
+  "ast": {
+    "absolutePath": "/Users/TS/Ursus/contracts/MyContract.sol",
+    "exportedSymbols": {
+      "MyContract": [
+        412
+      ]
+    },
+    "id": 413,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 399,
+        "literals": [
+          "solidity",
+          ">=",
+          "0.4",
+          ".22",
+          "<",
+          "0.7",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:32:3"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 412,
+        "linearizedBaseContracts": [
+          412
+        ],
+        "name": "MyContract",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": {
+              "id": 410,
+              "nodeType": "Block",
+              "src": "141:42:3",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "components": [
+                      {
+                        "argumentTypes": null,
+                        "hexValue": "3233343536",
+                        "id": 406,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": true,
+                        "kind": "number",
+                        "lValueRequested": false,
+                        "nodeType": "Literal",
+                        "src": "159:5:3",
+                        "subdenomination": null,
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_rational_23456_by_1",
+                          "typeString": "int_const 23456"
+                        },
+                        "value": "23456"
+                      },
+                      {
+                        "argumentTypes": null,
+                        "hexValue": "48656c6c6f2125",
+                        "id": 407,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": true,
+                        "kind": "string",
+                        "lValueRequested": false,
+                        "nodeType": "Literal",
+                        "src": "166:9:3",
+                        "subdenomination": null,
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_stringliteral_661136a4267dba9ccdf6bfddb7c00e714de936674c4bdb065a531cf1cb15c7fc",
+                          "typeString": "literal_string \"Hello!%\""
+                        },
+                        "value": "Hello!%"
+                      }
+                    ],
+                    "id": 408,
+                    "isConstant": false,
+                    "isInlineArray": false,
+                    "isLValue": false,
+                    "isPure": true,
+                    "lValueRequested": false,
+                    "nodeType": "TupleExpression",
+                    "src": "158:18:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$_t_rational_23456_by_1_$_t_stringliteral_661136a4267dba9ccdf6bfddb7c00e714de936674c4bdb065a531cf1cb15c7fc_$",
+                      "typeString": "tuple(int_const 23456,literal_string \"Hello!%\")"
+                    }
+                  },
+                  "functionReturnParameters": 405,
+                  "id": 409,
+                  "nodeType": "Return",
+                  "src": "151:25:3"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 411,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "myFunction",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 400,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "79:2:3"
+            },
+            "returnParameters": {
+              "id": 405,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 402,
+                  "name": "myNumber",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 411,
+                  "src": "102:13:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 401,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "102:4:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 404,
+                  "name": "myString",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 411,
+                  "src": "117:22:3",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 403,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "117:6:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "101:39:3"
+            },
+            "scope": 412,
+            "src": "60:123:3",
+            "stateMutability": "pure",
+            "superFunction": null,
+            "visibility": "public"
+          }
+        ],
+        "scope": 413,
+        "src": "34:151:3"
+      }
+    ],
+    "src": "0:185:3"
+  },
+  "legacyAST": {
+    "absolutePath": "/Users/TS/Ursus/contracts/MyContract.sol",
+    "exportedSymbols": {
+      "MyContract": [
+        412
+      ]
+    },
+    "id": 413,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 399,
+        "literals": [
+          "solidity",
+          ">=",
+          "0.4",
+          ".22",
+          "<",
+          "0.7",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:32:3"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 412,
+        "linearizedBaseContracts": [
+          412
+        ],
+        "name": "MyContract",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": {
+              "id": 410,
+              "nodeType": "Block",
+              "src": "141:42:3",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "components": [
+                      {
+                        "argumentTypes": null,
+                        "hexValue": "3233343536",
+                        "id": 406,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": true,
+                        "kind": "number",
+                        "lValueRequested": false,
+                        "nodeType": "Literal",
+                        "src": "159:5:3",
+                        "subdenomination": null,
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_rational_23456_by_1",
+                          "typeString": "int_const 23456"
+                        },
+                        "value": "23456"
+                      },
+                      {
+                        "argumentTypes": null,
+                        "hexValue": "48656c6c6f2125",
+                        "id": 407,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": true,
+                        "kind": "string",
+                        "lValueRequested": false,
+                        "nodeType": "Literal",
+                        "src": "166:9:3",
+                        "subdenomination": null,
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_stringliteral_661136a4267dba9ccdf6bfddb7c00e714de936674c4bdb065a531cf1cb15c7fc",
+                          "typeString": "literal_string \"Hello!%\""
+                        },
+                        "value": "Hello!%"
+                      }
+                    ],
+                    "id": 408,
+                    "isConstant": false,
+                    "isInlineArray": false,
+                    "isLValue": false,
+                    "isPure": true,
+                    "lValueRequested": false,
+                    "nodeType": "TupleExpression",
+                    "src": "158:18:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$_t_rational_23456_by_1_$_t_stringliteral_661136a4267dba9ccdf6bfddb7c00e714de936674c4bdb065a531cf1cb15c7fc_$",
+                      "typeString": "tuple(int_const 23456,literal_string \"Hello!%\")"
+                    }
+                  },
+                  "functionReturnParameters": 405,
+                  "id": 409,
+                  "nodeType": "Return",
+                  "src": "151:25:3"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 411,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "myFunction",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 400,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "79:2:3"
+            },
+            "returnParameters": {
+              "id": 405,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 402,
+                  "name": "myNumber",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 411,
+                  "src": "102:13:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 401,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "102:4:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 404,
+                  "name": "myString",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 411,
+                  "src": "117:22:3",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 403,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "117:6:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "101:39:3"
+            },
+            "scope": 412,
+            "src": "60:123:3",
+            "stateMutability": "pure",
+            "superFunction": null,
+            "visibility": "public"
+          }
+        ],
+        "scope": 413,
+        "src": "34:151:3"
+      }
+    ],
+    "src": "0:185:3"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.5.0+commit.1d4f565a.Emscripten.clang"
+  },
+  "networks": {
+    "5777": {
+      "events": {},
+      "links": {},
+      "address": "0x660199D03de8D3037A255f81F3C3F017cA069f86",
+      "transactionHash": "0x49e2d67119a7a2a36330ade05d9676407fbe3ad9c218ed1eddf17fadc750af0e"
+    }
+  },
+  "schemaVersion": "3.0.8",
+  "updatedAt": "2019-05-05T13:31:10.069Z",
+  "devdoc": {
+    "methods": {}
+  },
+  "userdoc": {
+    "methods": {}
+  }
+}
