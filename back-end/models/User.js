@@ -1,3 +1,4 @@
+// 用户数据表
 const Sequelize = require('sequelize');
 const sequelize = require('./database');
 
@@ -19,9 +20,13 @@ User.init(
         bcAddress: {
             type: Sequelize.STRING
         },
+        // 手机
+        telephone: {
+            type: Sequelize.STRING
+        },
         // 用户类型（收件人/快递员）
         usertype: {
-            type: Sequelize.ENUM("expressowner", "expressman")
+            type: Sequelize.ENUM("owner", "courier")
         }
     },
     {
