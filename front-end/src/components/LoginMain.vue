@@ -1,10 +1,7 @@
 <template>
-  <div class="login-panel">
-    <div class="display-panel">
-      <img class="logo" src="../assets/logo.png" alt="logo">
-      <span>浣熊-区块链人人快递</span>
-    </div>
+  <div class="login-main">
     <el-form :model="loginInfo">
+      <DisplayPanel></DisplayPanel>
       <el-form-item label="选择登录身份">
         <br>
         <el-radio-group v-model="loginInfo.type">
@@ -20,15 +17,17 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary">登录</el-button>
-        <el-button>注册</el-button>
+        <el-button @click="toRegister">注册</el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script>
+import DisplayPanel from "../components/DisplayPanel";
 export default {
-  name: "Login",
+  name: "LoginMain",
+  components: { DisplayPanel },
   data() {
     return {
       loginInfo: {
@@ -47,32 +46,22 @@ export default {
         }
       ]
     };
+  },
+  methods: {
+    toRegister() {
+      this.$router.push("/register");
+    }
   }
 };
 </script>
 
 <style scoped>
-.login-panel {
+.login-main {
   width: 350px;
   background: white;
   padding: 20px;
   margin: 0 auto;
   border-radius: 5px;
-  position: relative;
-  top: -50px;
   margin-bottom: 10px;
-}
-.display-panel {
-  color: #6583b4;
-  font-size: 18px;
-  display: flex;
-  justify-content: center;
-  flex-direction: row;
-  align-items: center;
-}
-.logo {
-  height: 50px;
-  display: inline-block;
-  margin-right: 10px;
 }
 </style>

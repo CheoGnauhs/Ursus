@@ -1,5 +1,7 @@
 import VueRouter from "vue-router";
 import Index from "./pages/Index";
+import Register from "./pages/Register";
+import Dashboard from "./pages/Dashboard";
 
 const router = new VueRouter(
     {
@@ -8,6 +10,14 @@ const router = new VueRouter(
             {
                 path: "/",
                 component: Index
+            },
+            {
+                path: "/register",
+                component: Register
+            },
+            {
+                path: "/dashboard",
+                component: Dashboard
             }
         ]
     }

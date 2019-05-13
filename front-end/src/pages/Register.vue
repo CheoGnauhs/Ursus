@@ -1,13 +1,24 @@
 <template>
-	
+  <div class="register">
+    <RegisterMain></RegisterMain>
+  </div>
 </template>
 
 <script>
+import RegisterMain from "../components/RegisterMain";
 export default {
-
-}
+  name: "Register",
+  components: { RegisterMain }
+};
 </script>
 
-<style>
-
+<style scoped>
+.register {
+  width: 100%;
+  height: 100%;
+  background: url("../assets/express.jpg") no-repeat 40% 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 </style>

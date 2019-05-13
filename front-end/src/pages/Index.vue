@@ -1,21 +1,21 @@
 <template>
   <div id="index">
-    <Login></Login>
+    <LoginMain></LoginMain>
   </div>
 </template>
 
 <script>
-import Login from "../components/Login";
+import LoginMain from "../components/LoginMain";
 export default {
   name: "Index",
-  components: { Login }
+  components: { LoginMain }
 };
 </script>
 
 <style scoped>
 #index {
-  width: 1440px;
-  height: 803px;
+  width: 100%;
+  height: 100%;
 	background: url("../assets/express.jpg") no-repeat 40% 90%;
 	display: flex;
 	flex-direction: column;
