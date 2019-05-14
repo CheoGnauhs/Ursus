@@ -1,12 +1,12 @@
 <template>
   <el-menu class="header-bar">
-    <el-col span="18">
+    <el-col :span="18">
       <DisplayPanel></DisplayPanel>
     </el-col>
-    <el-col span="6" class="panel">
+    <el-col :span="6" class="panel">
       <div class="control-panel">
         <el-button :style="{'margin-right': '15px'}" type="text">首页</el-button>
-        <el-badge value="0" hidden="true">
+        <el-badge value="0" :hidden="true">
           <el-button size="small">消息</el-button>
         </el-badge>
       </div>
@@ -14,8 +14,8 @@
         <el-dropdown>
           <v-gravatar
             class="avatar"
-            email="123@qq.com"
-            size="30"
+            email="123456@qq.com"
+            :size="30"
             alt="avatar"
             default-img="robohash"
           ></v-gravatar>
@@ -70,6 +70,6 @@ export default {
 }
 .avatar {
   border-radius: 50%;
-  border: 1px solid gray;
+  border: 1px solid lightgray;
 }
 </style>

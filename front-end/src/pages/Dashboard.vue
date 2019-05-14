@@ -17,9 +17,10 @@
 <script>
 import HeaderBar from "../components/HeaderBar";
 import AsidePanel from "../components/AsidePanel";
+import UserPanel from "../components/UserPanel";
 export default {
   name: "Dashboard",
-  components: { HeaderBar, AsidePanel }
+  components: { HeaderBar, AsidePanel, UserPanel }
 };
 </script>
 
