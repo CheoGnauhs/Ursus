@@ -10,12 +10,13 @@
         <span>快递管理</span>
       </template>
       <el-menu-item-group>
-        <el-menu-item index="1-1">新增快递</el-menu-item>
+        <el-menu-item @click="jumpNewExpress" index="1-1">新增快递</el-menu-item>
         <el-submenu index="1-2">
           <template slot="title">所有快递</template>
-          <el-menu-item index="1-2-1">进行中</el-menu-item>
-          <el-menu-item index="1-2-2">未提交</el-menu-item>
-          <el-menu-item index="1-2-3">已完成</el-menu-item>
+          <el-menu-item @click="jumpInProcess" index="1-2-1">进行中</el-menu-item>
+          <el-menu-item @click="jumpUnsubmitted" index="1-2-2">未提交</el-menu-item>
+          <el-menu-item @click="jumpNeedComment" index="1-2-3">待评价</el-menu-item>
+          <el-menu-item @click="jumpFinished" index="1-2-4">已完成</el-menu-item>
         </el-submenu>
       </el-menu-item-group>
     </el-submenu>
@@ -35,7 +36,24 @@
 
 <script>
 export default {
-  name: "AsidePanel"
+  name: "AsidePanel",
+  methods: {
+    jumpNewExpress() {
+      this.$router.push("/dashboard/new-express");
+    },
+    jumpInProcess() {
+      this.$router.push("/dashboard/in-process");
+    },
+    jumpUnsubmitted() {
+      this.$router.push("/dashboard/unsubmitted");
+    },
+    jumpNeedComment() {
+      this.$router.push("/dashboard/need-comment");
+    },
+    jumpFinished() {
+      this.$router.push("/dashboard/finished");
+    }
+  }
 };
 </script>
 

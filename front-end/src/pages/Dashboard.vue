@@ -1,9 +1,9 @@
 <template>
   <el-container class="dashboard">
-    <el-header>
+    <el-header class="header">
       <HeaderBar></HeaderBar>
     </el-header>
-    <el-container class="content-holder">
+    <el-container class="content">
       <el-aside width="200px">
         <AsidePanel></AsidePanel>
       </el-aside>
@@ -17,16 +17,25 @@
 <script>
 import HeaderBar from "../components/HeaderBar";
 import AsidePanel from "../components/AsidePanel";
-import UserPanel from "../components/UserPanel";
 export default {
   name: "Dashboard",
-  components: { HeaderBar, AsidePanel, UserPanel }
+  components: { HeaderBar, AsidePanel }
 };
 </script>
 
 <style scoped>
+.el-main {
+  overflow:scroll;
+  height: 100%;
+}
 .dashboard {
   width: 100%;
   height: 100%;
+}
+.header{
+  height: 7vh;
+}
+.content{
+  height: 92vh;
 }
 </style>

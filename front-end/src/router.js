@@ -3,6 +3,11 @@ import Index from "./pages/Index";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import UserPanel from "./components/UserPanel";
+import NewExpress from "./components/NewExpress";
+import InProcess from "./components/InProcess";
+import Unsubmitted from "./components/Unsubmitted";
+import NeedComment from "./components/NeedComment";
+import Finished from './components/Finished';
 
 const router = new VueRouter(
 	{
@@ -23,6 +28,26 @@ const router = new VueRouter(
 					{
 						path: "",
 						component: UserPanel
+					},
+					{
+						path: "new-express",
+						component: NewExpress
+					},
+					{
+						path: "in-process",
+						component: InProcess
+					},
+					{
+						path: "unsubmitted",
+						component: Unsubmitted
+					},
+					{
+						path: "need-comment",
+						component: NeedComment
+					},
+					{
+						path: "finished",
+						component: Finished
 					}
 				]
 			}

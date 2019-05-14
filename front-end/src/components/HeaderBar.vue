@@ -5,7 +5,7 @@
     </el-col>
     <el-col :span="6" class="panel">
       <div class="control-panel">
-        <el-button :style="{'margin-right': '15px'}" type="text">首页</el-button>
+        <el-button @click="jumpIndex" :style="{'margin-right': '15px'}" type="text">首页</el-button>
         <el-badge value="0" :hidden="true">
           <el-button size="small">消息</el-button>
         </el-badge>
@@ -33,7 +33,12 @@
 import DisplayPanel from "./DisplayPanel";
 export default {
   name: "HeaderBar",
-  components: { DisplayPanel }
+  components: { DisplayPanel },
+  methods:{
+    jumpIndex(){
+      this.$router.push("/dashboard")
+    }
+  }
 };
 </script>
 
