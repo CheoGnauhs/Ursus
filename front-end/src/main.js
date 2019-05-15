@@ -4,6 +4,7 @@ import App from './App.vue';
 import ElementUI from 'element-ui';
 import router from './router';
 import Gravatar from "vue-gravatar";
+import VueQrcode from "@chenfengyuan/vue-qrcode";
 import './theme/index.css';
 
 Vue.config.productionTip = false
@@ -11,6 +12,7 @@ Vue.config.productionTip = false
 Vue.use(ElementUI);
 Vue.use(VueRouter);
 Vue.component('v-gravatar', Gravatar);
+Vue.component(VueQrcode.name, VueQrcode);
 
 new Vue({
   router,

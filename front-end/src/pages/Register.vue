@@ -15,7 +15,9 @@ export default {
 <style scoped>
 .register {
   width: 100%;
-  height: 100%;
+  height: 100vh;
+  overflow: scroll;
+  padding: 50px 0;
   background: url("../assets/express.jpg") no-repeat 40% 90%;
   display: flex;
   flex-direction: column;

@@ -6,7 +6,7 @@
       <div slot="header" class="detail-header">
         <div class="header-info">
           <el-tag type="success">快递单号：805599362415999999</el-tag>
-					<el-tag type="warning">快递物品：鞋子</el-tag>
+          <el-tag type="warning">快递物品：鞋子</el-tag>
           <el-tag type="info">订单日期：2019-05-14</el-tag>
         </div>
         <div v-if="type=='in-process'" class="header-panel">
@@ -63,15 +63,15 @@
       <el-dialog v-if="type=='need-comment'" :visible.sync="dialogVisible" title="评价快递员邱超凡">
         <el-form :model="commentInfo">
           <el-form-item label="评分">
-						<br>
+            <br>
             <el-rate v-model="commentInfo.value" :colors="['#99A9BF', '#F7BA2A', '#FF9900']"></el-rate>
           </el-form-item>
           <el-form-item label="评价">
             <el-input v-model="commentInfo.comment" placeholder="在此输入想要评论的内容"></el-input>
           </el-form-item>
-					<el-form-item>
-						<el-button type="primary">确认评价</el-button>
-					</el-form-item>
+          <el-form-item>
+            <el-button type="primary">确认评价</el-button>
+          </el-form-item>
         </el-form>
       </el-dialog>
       <!-- 快递评价详情 -->
@@ -87,6 +87,24 @@
           <div class="comment">师傅很不错，到达很准时，态度很棒！</div>
         </el-collapse-item>
       </el-collapse>
+      <!-- 快递进展 -->
+      <el-steps class="express-steps" :active="0" finish-status="success" process-status="finish">
+        <el-step title="未提交">
+          <template slot="description">提交时间</template>
+        </el-step>
+        <el-step title="匹配快递员">
+          <template slot="description">接单时间</template>
+        </el-step>
+        <el-step title="运送中">
+          <template slot="description">送达时间</template>
+        </el-step>
+        <el-step title="评价">
+          <template slot="description">评价时间</template>
+        </el-step>
+        <el-step title="完成">
+          <template slot="description">完成时间</template>
+        </el-step>
+      </el-steps>
     </el-card>
   </el-card>
 </template>
@@ -117,8 +135,8 @@ export default {
   align-items: center;
   justify-content: space-between;
 }
-.el-tag{
-	margin-right: 5px;
+.el-tag {
+  margin-right: 5px;
 }
 .express-detail {
   display: flex;
@@ -140,5 +158,8 @@ export default {
 }
 .comment {
   margin-top: 10px;
+}
+.express-steps {
+  margin-top: 20px;
 }
 </style>

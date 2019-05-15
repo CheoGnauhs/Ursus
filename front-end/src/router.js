@@ -8,6 +8,10 @@ import InProcess from "./components/InProcess";
 import Unsubmitted from "./components/Unsubmitted";
 import NeedComment from "./components/NeedComment";
 import Finished from './components/Finished';
+import UserInfo from "./components/UserInfo";
+import BlockInfo from "./components/BlockInfo";
+import CreditInfo from "./components/CreditInfo";
+import Notifications from "./components/Notifications";
 
 const router = new VueRouter(
 	{
@@ -48,6 +52,22 @@ const router = new VueRouter(
 					{
 						path: "finished",
 						component: Finished
+					},
+					{
+						path: "user-info",
+						component: UserInfo
+					},
+					{
+						path: "block-info",
+						component: BlockInfo
+					},
+					{
+						path: "credit-info",
+						component: CreditInfo
+					},
+					{
+						path: "notifications",
+						component: Notifications
 					}
 				]
 			}
