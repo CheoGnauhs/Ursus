@@ -11,7 +11,7 @@
         </div>
         <div v-if="type=='in-process'" class="header-panel">
           <el-button type="primary">确认送达</el-button>
-          <el-button>快递定位</el-button>
+          <el-button @click="jumpTo('/dashboard/express-location')">快递定位</el-button>
         </div>
         <div v-if="type=='unsubmitted'" class="header-panel">
           <el-button type="primary">提交需求</el-button>
@@ -125,6 +125,11 @@ export default {
       value: 3.5,
       dialogVisible: false
     };
+  },
+  methods: {
+    jumpTo(route) {
+      this.$router.push(route);
+    }
   }
 };
 </script>

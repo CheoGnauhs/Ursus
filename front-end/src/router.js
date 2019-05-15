@@ -12,6 +12,7 @@ import UserInfo from "./components/UserInfo";
 import BlockInfo from "./components/BlockInfo";
 import CreditInfo from "./components/CreditInfo";
 import Notifications from "./components/Notifications";
+import ExpressLocation from "./components/ExpressLocation";
 
 const router = new VueRouter(
 	{
@@ -68,6 +69,10 @@ const router = new VueRouter(
 					{
 						path: "notifications",
 						component: Notifications
+					},
+					{
+						path: "express-location",
+						component: ExpressLocation
 					}
 				]
 			}
