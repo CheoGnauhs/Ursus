@@ -9,13 +9,13 @@
         <el-input v-model="expressInfo.cargo" placeholder="请输入快递内的物品"></el-input>
       </el-form-item>
       <el-form-item label="取货区域">
-        <el-cascader :options="regionData" v-model="getRegion" class="full-length"></el-cascader>
+        <el-cascader :options="regionData" v-model="expressInfo.getRegion" class="full-length"></el-cascader>
       </el-form-item>
       <el-form-item label="取货地址">
         <el-input v-model="expressInfo.getAddress" placeholder="请输入详细地址"></el-input>
       </el-form-item>
       <el-form-item label="送货区域">
-        <el-cascader :options="regionData" v-model="sendRegion" class="full-length"></el-cascader>
+        <el-cascader :options="regionData" v-model="expressInfo.sendRegion" class="full-length"></el-cascader>
       </el-form-item>
       <el-form-item label="派件地址">
         <el-input v-model="expressInfo.sendAddress" placeholder="请输入详细地址"></el-input>
@@ -57,8 +57,8 @@ export default {
         eid: "",
         cargo: "",
         date: "",
-        getRegion: "",
-        sendRegion: "",
+        getRegion: [],
+        sendRegion: [],
         getAddress: "",
         sendAddress: "",
         deliveryFrom: "",

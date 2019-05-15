@@ -119,7 +119,7 @@ export default {
   data() {
     return {
       commentInfo: {
-        value: "",
+        value: 0,
         comment: ""
       },
       value: 3.5,
