@@ -21,10 +21,12 @@
 </template>
 
 <script>
+/* eslint-disable */
 export default {
   name: "UserInfo",
   data() {
     return {
+      id: "",
       userInfo: {
         username: "",
         name: "",

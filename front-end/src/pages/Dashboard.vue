@@ -1,11 +1,11 @@
 <template>
   <el-container class="dashboard">
     <el-header class="header">
-      <HeaderBar></HeaderBar>
+      <HeaderBar :userInfo="userInfo"></HeaderBar>
     </el-header>
     <el-container class="content">
       <el-aside width="200px">
-        <AsidePanel></AsidePanel>
+        <AsidePanel :userInfo="userInfo"></AsidePanel>
       </el-aside>
       <el-main>
         <router-view></router-view>
@@ -15,6 +15,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import HeaderBar from "../components/HeaderBar";
 import AsidePanel from "../components/AsidePanel";
 export default {
@@ -22,6 +23,12 @@ export default {
   components: { HeaderBar, AsidePanel },
   data() {
     return {
+      id: "",
+      userInfo: {
+        id: "",
+        realname: "",
+        telephone: ""
+      },
       location: {
         accuracy: "",
         latitude: "",
@@ -30,6 +37,19 @@ export default {
     };
   },
   mounted() {
+    this.id = this.$route.params.uid;
+    fetch("/user?id=" + this.id).then(res => {
+      if (res.ok) {
+        res.json().then(res => {
+          console.log(res);
+          this.userInfo.id = res.id;
+          this.userInfo.realname = res.realname;
+          this.userInfo.telephone = res.telephone;
+        });
+      } else {
+        console.log("request error!");
+      }
+    });
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(position => {
         // eslint-disable-next-line

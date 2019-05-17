@@ -14,7 +14,11 @@ Location.init(
         },
         // 用户定位
         location: {
-            type: Sequelize.STRING,
+            type: Sequelize.STRING
+        },
+        // 精准度
+        accuracy: {
+            type: Sequelize.STRING
         }
     },
     {

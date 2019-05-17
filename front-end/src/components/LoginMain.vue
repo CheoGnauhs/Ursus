@@ -36,7 +36,7 @@ export default {
     var validateUsername = (rule, value, callback) => {
       let reg = /^\w+$/;
       if (value.search(reg) === -1) {
-        callback(new Error("用户名需由数字、字母、下划线构成"));
+        callback(new Error("用户名只能包含数字、字母、下划线"));
       } else {
         callback();
       }

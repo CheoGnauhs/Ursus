@@ -4,16 +4,16 @@
       <span class="info">
         <v-gravatar
           class="avatar"
-          email="123456@qq.com"
+          :email="userInfo.telephone+'@123.com'"
           :size="50"
           alt="avatar"
           default-img="robohash"
         ></v-gravatar>
-        <span class="text">Ryan Tan</span>
+        <span class="text">{{userInfo.realname}}</span>
       </span>
       <span class="text">
         钱包地址:
-        <el-tag type="warning">0xB22ca5601532DD25407D767769ECDe75a7DF3E1A</el-tag>
+        <el-tag type="warning">{{userInfo.bcAddress}}</el-tag>
       </span>
     </div>
     <div class="control-panel">
@@ -42,8 +42,33 @@
 </template>
 
 <script>
+/* eslint-disable */
 export default {
-  name: "UserPanel"
+  name: "UserPanel",
+  data() {
+    return {
+      id: "",
+      userInfo: {
+        realname: "",
+        telephone: "",
+        bcAddress: ""
+      }
+    };
+  },
+  mounted() {
+    this.id = this.$route.params.uid;
+    fetch("/user?id=" + this.id).then(res => {
+      if (res.ok) {
+        res.json().then(res => {
+          this.userInfo.realname = res.realname;
+          this.userInfo.telephone = res.telephone;
+          this.userInfo.bcAddress = res.bcAddress;
+        });
+      } else {
+        console.log("request error!");
+      }
+    });
+  }
 };
 </script>
 
