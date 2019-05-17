@@ -29,7 +29,7 @@ const router = new VueRouter(
 				component: Register
 			},
 			{
-				path: "/dashboard",
+				path: "/dashboard/:uid",
 				component: Dashboard,
 				children: [
 					{
