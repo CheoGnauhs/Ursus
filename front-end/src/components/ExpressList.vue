@@ -123,7 +123,8 @@ export default {
         comment: ""
       },
       value: 3.5,
-      dialogVisible: false
+      dialogVisible: false,
+      picDialogVisible: false
     };
   },
   methods: {

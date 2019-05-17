@@ -16,14 +16,18 @@
         <el-input type="password" v-model="loginInfo.password" placeholder="请输入密码"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary">登录</el-button>
+        <el-button @click="login" type="primary">登录</el-button>
         <el-button @click="toRegister">注册</el-button>
+      </el-form-item>
+      <el-form-item>
+        <span class="error">{{errorInfo}}</span>
       </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script>
+/* eslint-disable */
 import DisplayPanel from "../components/DisplayPanel";
 export default {
   name: "LoginMain",
@@ -35,6 +39,7 @@ export default {
         username: "",
         password: ""
       },
+      errorInfo: "",
       typeOpts: [
         {
           value: "owner",
@@ -50,6 +55,30 @@ export default {
   methods: {
     toRegister() {
       this.$router.push("/register");
+    },
+    login() {
+      fetch("/login", {
+        headers: new Headers({ "Content-Type": "application/json" }),
+        method: "POST",
+        body: JSON.stringify({
+          username: this.loginInfo.username,
+          password: this.loginInfo.password
+        })
+      })
+        .then(res => {
+          return res.json();
+        })
+        .then(res => {
+          if (res.error != null) {
+            this.errorInfo = res.error;
+          } else {
+            if (this.loginInfo.type == "owner") {
+              this.$router.push("/dashboard");
+            } else {
+              this.$router.push("/courier");
+            }
+          }
+        });
     }
   }
 };
@@ -63,5 +92,8 @@ export default {
   margin: 0 auto;
   border-radius: 5px;
   margin-bottom: 10px;
+}
+.error {
+  color: red;
 }
 </style>

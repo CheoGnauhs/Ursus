@@ -17,7 +17,7 @@ router.post('/resetDB', function (req, res) {
         console.log(res);
     })
     console.log("success");
-    res.send("success");
+    res.send({ statue: "success", info: "reconstruced" });
 });
 
 module.exports = router;

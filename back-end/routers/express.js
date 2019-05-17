@@ -80,7 +80,7 @@ router.delete('/express', function (req, res) {
         }
     ).then(() => {
         console.log("Deleted");
-        res.send("Deleted");
+        res.send({ statue: "success", info: "deleted" });
     }).catch(err => {
         console.log(err);
         res.send(err);

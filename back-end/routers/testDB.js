@@ -9,7 +9,7 @@ router.get('/testDB', function (req, res) {
         res.send("Connection has benn established successfully.");
     }).catch(err => {
         console.log("Cannot connnect to database:", err);
-        res.send("Cannot connnect to database:", err);
+        res.send(err);
     })
 });
 

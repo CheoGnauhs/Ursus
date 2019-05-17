@@ -6,8 +6,19 @@ class User extends Sequelize.Model { };
 
 User.init(
     {
+        // id
+        id: {
+            type: Sequelize.INTEGER,
+            autoIncrement: true,
+            primaryKey: true
+        },
         // 用户名
         username: {
+            type: Sequelize.STRING,
+            allowNull: false,
+            primaryKey: true
+        },
+        realname: {
             type: Sequelize.STRING,
             allowNull: false
         },

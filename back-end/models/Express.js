@@ -35,7 +35,7 @@ Express.init(
         },
         // 快递当前状态
         statue: {
-            type: Sequelize.ENUM('created', 'searching', 'delivering', 'ownerChecked', 'courierChecked', 'finished', 'cancelled'),
+            type: Sequelize.ENUM('created', 'searching', 'delivering', 'ownerChecked', 'courierChecked', 'needComment', 'finished', 'cancelled'),
             allowNull: false
         }
     },

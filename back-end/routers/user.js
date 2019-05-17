@@ -28,6 +28,7 @@ router.get('/user', function (req, res) {
 router.post('/user', function (req, res) {
     User.create({
         username: req.body.username,
+        realname: req.body.realname,
         password: req.body.password,
         usertype: req.body.usertype,
         telephone: req.body.telephone
@@ -58,6 +59,7 @@ router.put('/user', function (req, res) {
     let id = req.query.id;
     let data = {
         username: req.body.username,
+        realname: req.body.realname,
         password: req.body.password,
         usertype: req.body.usertype,
         telephone: req.body.telephone,
@@ -89,7 +91,7 @@ router.delete('/user', function (req, res) {
         { where: { id: req.query.id } }
     ).then(() => {
         console.log("Deleted");
-        res.send("Deleted");
+        res.send({ statue: "success", info: "deleted" });
     }).catch(err => {
         console.log(err);
         res.send(err);
