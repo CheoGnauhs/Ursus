@@ -17,17 +17,21 @@ router.post("/login", function (req, res) {
 			}
 		}
 	).then(user => {
+		if (user == null) {
+			console.log("用户不存在")
+			res.status(400).send({ error: "帐号或密码错误" });
+		}
 		if (user.password == password) {
-			console.log("success");
-			res.send({ status: "success", info: "登陆成功" })
+			console.log("login success");
+			res.status(200).send({ status: "success", info: "登陆成功", id: user.id })
 		}
 		else {
 			console.log("帐号或密码错误");
-			res.send({ status: "fail", error: "账号或密码错误" })
+			res.status(400).send({ status: "fail", error: "账号或密码错误" })
 		}
 	}).catch(err => {
 		console.log(err);
-		res.send(err);
+		res.status(400).send(err);
 	})
 })
 

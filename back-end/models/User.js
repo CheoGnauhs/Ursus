@@ -16,8 +16,10 @@ User.init(
         username: {
             type: Sequelize.STRING,
             allowNull: false,
-            primaryKey: true
+            primaryKey: true,
+            unique: true
         },
+        // 真实姓名
         realname: {
             type: Sequelize.STRING,
             allowNull: false

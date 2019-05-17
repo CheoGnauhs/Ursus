@@ -26,6 +26,7 @@ router.get('/user', function (req, res) {
 
 // 创建新用户
 router.post('/user', function (req, res) {
+    let username = req.body.username;
     User.create({
         username: req.body.username,
         realname: req.body.realname,
@@ -42,15 +43,22 @@ router.post('/user', function (req, res) {
                 }
             }
         ).then(user => {
-            console.log(user);
-            res.send(user);
+            User.findOne(
+                {
+                    where:
+                        { username: username }
+                }
+            ).then(user => {
+                console.log(user);
+                res.status(200).send({ status: "success", info: "注册成功", id: user.id });
+            })
         }).catch(err => {
             console.log(err);
-            res.send(err);
+            res.status(400).send({ error: err.errors[0].message });
         })
     }).catch(err => {
         console.log(err);
-        res.send(err);
+        res.status(400).send({ error: err.errors[0].message });
     });
 });
 
@@ -76,12 +84,12 @@ router.put('/user', function (req, res) {
             where:
                 { id: id }
         }
-    ).then(user => {
-        console.log(user);
-        res.send(user);
+    ).then(() => {
+        console.log("Updated");
+        res.status(200).send({ status: "success", info: "用户信息更新成功" });
     }).catch(err => {
         console.log(user);
-        res.send(err);
+        res.status(400).send(err);
     });
 });
 
@@ -91,10 +99,10 @@ router.delete('/user', function (req, res) {
         { where: { id: req.query.id } }
     ).then(() => {
         console.log("Deleted");
-        res.send({ statue: "success", info: "deleted" });
+        res.status(200).send({ statue: "success", info: "deleted" });
     }).catch(err => {
         console.log(err);
-        res.send(err);
+        res.status(400).send(err);
     });
 });
 
