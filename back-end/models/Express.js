@@ -17,21 +17,45 @@ Express.init(
             type: Sequelize.INTEGER,
             allowNull: false
         },
+        // 内含物品
+        content: {
+            type: Sequelize.STRING,
+            allowNull: false
+        },
+        // 快递取货区域
+        getRegion: {
+            type: Sequelize.STRING,
+            allowNull: false
+        },
+        // 快递送货区域
+        sendRegion: {
+            type: Sequelize.STRING,
+            allowNull: false
+        },
         // 快递取货地址
         getAddress: {
-            type: Sequelize.STRING
+            type: Sequelize.STRING,
+            allowNull: false
         },
         // 快递送货地址
         sendAddress: {
-            type: Sequelize.STRING
+            type: Sequelize.STRING,
+            allowNull: false
+        },
+        // 送货时间
+        deliveryDate: {
+            type: Sequelize.STRING,
+            allowNull: false
         },
         // 快递配送时间段起始值
         deliveryFrom: {
-            type: Sequelize.STRING
+            type: Sequelize.STRING,
+            allowNull: false
         },
         // 快递配送时间段结束值
         deliveryTo: {
-            type: Sequelize.STRING
+            type: Sequelize.STRING,
+            allowNull: false
         },
         // 快递当前状态
         statue: {

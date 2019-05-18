@@ -3,6 +3,7 @@ const router = require('express').Router();
 const User = require('../models/User');
 const Express = require('../models/Express');
 const Contract = require('../models/Contract');
+const ExpressNum = require('../models/ExpressNum');
 
 // 重新创建数据库
 router.post('/resetDB', function (req, res) {
@@ -14,6 +15,9 @@ router.post('/resetDB', function (req, res) {
         console.log(res);
     });
     Contract.sync({ force: true }).then(res => {
+        console.log(res);
+    });
+    ExpressNum.sync({ force: true }).then(res => {
         console.log(res);
     })
     console.log("success");

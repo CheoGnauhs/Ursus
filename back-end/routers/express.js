@@ -23,8 +23,10 @@ router.post('/express', function (req, res) {
         {
             eid: req.body.eid,
             uid: req.body.uid,
+            content: req.body.content,
             getAddress: req.body.getAddress,
             sendAddress: req.body.sendAddress,
+            deliveryDate: req.body.deliveryDate,
             deliveryFrom: req.body.deliveryFrom,
             deliveryTo: req.body.deliveryTo,
             statue: "created"
@@ -42,9 +44,12 @@ router.post('/express', function (req, res) {
 router.put('/express', function (req, res) {
     let eid = req.body.eid;
     let data = {
+        eid: req.body.eid,
         uid: req.body.uid,
+        content: req.body.content,
+        getAddress: req.body.getAddress,
         sendAddress: req.body.sendAddress,
-        deliveryFrom: req.body.deliveryFrom,
+        deliveryDate: req.body.deliveryDate,
         deliveryFrom: req.body.deliveryFrom,
         deliveryTo: req.body.deliveryTo,
         statue: req.body.statue

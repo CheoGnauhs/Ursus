@@ -1,6 +1,7 @@
 // 用户数据表
 const Sequelize = require('sequelize');
 const sequelize = require('./database');
+const Express = require('./Express');
 
 class User extends Sequelize.Model { };
 

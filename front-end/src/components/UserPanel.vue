@@ -18,22 +18,22 @@
     </div>
     <div class="control-panel">
       <span class="badge-holder">
-        <el-badge value="1" :hidden="true">
+        <el-badge :value="expressNum.inprocessing" :hidden="expressNum.inprocessing==0">
           <el-button type="text">正在进行中</el-button>
         </el-badge>
       </span>
       <span class="badge-holder" v-if="userInfo.type!='courier'">
-        <el-badge value="1">
+        <el-badge :value="expressNum.unsubmitted" :hidden="expressNum.unsubmitted==0">
           <el-button type="text">未提交</el-button>
         </el-badge>
       </span>
       <span class="badge-holder">
-        <el-badge value="1">
+        <el-badge :value="expressNum.needcomment" :hidden="expressNum.needComment==0">
           <el-button type="text">待评价</el-button>
         </el-badge>
       </span>
       <span class="badge-holder">
-        <el-badge value="1">
+        <el-badge :value="expressNum.finished" :hidden="expressNum.finished==0">
           <el-button type="text">已完成</el-button>
         </el-badge>
       </span>
@@ -48,6 +48,12 @@ export default {
   data() {
     return {
       id: "",
+      expressNum: {
+        unsubmitted: "",
+        inprocessing: "",
+        needcomment: "",
+        finished: ""
+      },
       userInfo: {
         realname: "",
         telephone: "",
@@ -56,20 +62,41 @@ export default {
       }
     };
   },
+  methods: {
+    getUserInfo() {
+      fetch("/user?id=" + this.id).then(res => {
+        if (res.ok) {
+          res.json().then(res => {
+            this.userInfo.realname = res.realname;
+            this.userInfo.telephone = res.telephone;
+            this.userInfo.bcAddress = res.bcAddress;
+            this.userInfo.type = res.usertype;
+          });
+        } else {
+          console.log("request error");
+        }
+      });
+    },
+    getExpressCount() {
+      fetch("/sorted_express?uid=" + this.id).then(res => {
+        if (res.ok) {
+          res.json().then(res => {
+            console.log(res);
+            this.expressNum.unsubmitted = res.unsubmitted;
+            this.expressNum.inprocessing = res.inprocessing;
+            this.expressNum.needcomment = res.needcomment;
+            this.expressNum.finished = res.finished;
+          });
+        } else {
+          console.log("request error");
+        }
+      });
+    }
+  },
   mounted() {
     this.id = this.$route.params.uid;
-    fetch("/user?id=" + this.id).then(res => {
-      if (res.ok) {
-        res.json().then(res => {
-          this.userInfo.realname = res.realname;
-          this.userInfo.telephone = res.telephone;
-          this.userInfo.bcAddress = res.bcAddress;
-          this.userInfo.type = res.usertype;
-        });
-      } else {
-        console.log("request error!");
-      }
-    });
+    this.getUserInfo();
+    this.getExpressCount();
   }
 };
 </script>

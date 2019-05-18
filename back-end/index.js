@@ -42,6 +42,7 @@ app.use(require('./routers/expresses'));
 app.use(require('./routers/contract'));
 app.use(require('./routers/contracts'));
 app.use(require('./routers/login'));
+app.use(require('./routers/expressnum'));
 
 // 获取区块链中目前激活的帐号
 app.get('/getaccounts', function (req, res) {
