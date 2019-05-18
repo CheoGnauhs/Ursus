@@ -24,6 +24,11 @@ export default {
   data() {
     return {
       id: "",
+      location: {
+        accuracy: "",
+        longitude: "",
+        latitude: ""
+      },
       userInfo: {
         id: "",
         telephone: "",
@@ -47,6 +52,34 @@ export default {
         console.log("Request error");
       }
     });
+    //定位
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(position => {
+        // eslint-disable-next-line
+        console.log(position);
+        this.location.accuracy = position.coords.accuracy;
+        this.location.latitude = position.coords.latitude;
+        this.location.longitude = position.coords.longitude;
+        fetch("/location", {
+          headers: new Headers({ "Content-Type": "application/json" }),
+          method: "PUT",
+          body: JSON.stringify({
+            uid: this.id,
+            latitude: this.location.latitude,
+            longitude: this.location.longitude,
+            accuracy: this.location.accuracy
+          })
+        }).then(res => {
+          if (res.ok) {
+            res.json().then(res => {
+              console.log(res);
+            });
+          } else {
+            console.log("request error");
+          }
+        });
+      });
+    }
   }
 };
 </script>

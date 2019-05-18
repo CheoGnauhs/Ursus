@@ -57,8 +57,12 @@ Express.init(
             type: Sequelize.STRING,
             allowNull: false
         },
+        // 快递花费比特币
+        deliveryFee: {
+            type: Sequelize.DECIMAL(10, 2)
+        },
         // 快递当前状态
-        statue: {
+        status: {
             type: Sequelize.ENUM('created', 'searching', 'delivering', 'ownerChecked', 'courierChecked', 'needComment', 'finished', 'cancelled'),
             allowNull: false
         }

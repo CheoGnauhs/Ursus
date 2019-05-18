@@ -150,6 +150,7 @@ export default {
           this.register();
         } else {
           this.isLoading = false;
+          this.$message.error("字段验证失败");
           console.log("error submit!!");
           return false;
         }
@@ -170,6 +171,21 @@ export default {
         console.log(res.ok);
         if (res.ok) {
           res.json().then(res => {
+            fetch("/location", {
+              headers: new Headers({ "Content-Type": "application/json" }),
+              method: "POST",
+              body: JSON.stringify({
+                uid: res.id
+              })
+            }).then(res => {
+              if (res.ok) {
+                res.json().then(res => {
+                  console.log(res);
+                });
+              } else {
+                console.log("request error");
+              }
+            });
             this.$message.success("注册成功");
             if (this.regInfo.type == "owner") {
               this.$router.push("/dashboard/" + res.id);
@@ -179,9 +195,9 @@ export default {
           });
         } else {
           this.isLoading = false;
+          this.$message.error("注册失败");
           this.errorInfo = "网络错误，请稍后重试";
           res.json().then(res => {
-            this.$message.error("注册失败");
             if (res.error == "username must be unique") {
               this.errorInfo = "用户名已被注册";
             } else this.errorInfo = res.error;

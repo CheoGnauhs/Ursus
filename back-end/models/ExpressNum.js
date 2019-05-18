@@ -12,7 +12,7 @@ class ExpressNum extends Sequelize.Model {
                 where:
                 {
                     uid: uid,
-                    statue: "created"
+                    status: "created"
                 }
             }
         ).then(res => {
@@ -28,7 +28,7 @@ class ExpressNum extends Sequelize.Model {
             {
                 where: {
                     uid: uid,
-                    statue: {
+                    status: {
                         [Sequelize.Op.or]: ["searching", "delivering", 'ownerChecked', 'courierChecked']
                     }
                 }
@@ -46,7 +46,7 @@ class ExpressNum extends Sequelize.Model {
             {
                 where: {
                     uid: uid,
-                    statue: "needComment"
+                    status: "needComment"
                 }
             }
         ).then(res => {
@@ -62,7 +62,7 @@ class ExpressNum extends Sequelize.Model {
             {
                 where: {
                     uid: uid,
-                    statue: "finished"
+                    status: "finished"
                 }
             }
         ).then(res => {

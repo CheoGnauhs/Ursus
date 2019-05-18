@@ -26,6 +26,11 @@ Contract.init(
         deliveryFee: {
             type: Sequelize.INTEGER,
             allowNull: false
+        },
+        // 合约状态
+        status: {
+            type: Sequelize.ENUM("delivering", "userCheck", "courierCheck", "finished"),
+            allowNull: false
         }
     },
     {

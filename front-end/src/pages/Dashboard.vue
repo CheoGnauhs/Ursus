@@ -50,15 +50,6 @@ export default {
         console.log("request error!");
       }
     });
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(position => {
-        // eslint-disable-next-line
-        console.log(position);
-        this.location.accuracy = position.coords.accuracy;
-        this.location.latitude = position.coords.latitude;
-        this.location.longitude = position.coords.longitude;
-      });
-    }
   }
 };
 </script>

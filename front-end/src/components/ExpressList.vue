@@ -1,35 +1,69 @@
 <template>
   <el-card>
     <div slot="header">{{title}}</div>
-    <el-card shadow="hover">
+    <div class="info" v-if="expressList==null||expressList.length==0||expressList[0]==null">暂无数据...</div>
+    <el-card
+      v-else
+      class="express-holder"
+      v-for="(item,index) in expressList"
+      :key="index"
+      shadow="hover"
+    >
       <!-- 快递基本信息以及对应操作按钮 -->
       <div slot="header" class="detail-header">
         <div class="header-info">
-          <el-tag type="success">快递单号：805599362415999999</el-tag>
-          <el-tag type="warning">快递物品：鞋子</el-tag>
-          <el-tag type="info">订单日期：2019-05-14</el-tag>
+          <el-tag type="success">快递单号：{{item.eid}}</el-tag>
+          <el-tag type="warning">快递物品：{{item.content}}</el-tag>
+          <el-tag type="info">订单日期：{{item.createdAt.split('T')[0]}}</el-tag>
         </div>
         <div v-if="type=='in-process'" class="header-panel">
-          <el-button type="primary">确认送达</el-button>
-          <el-button @click="jumpTo('/dashboard/express-location')">快递定位</el-button>
+          <!-- 运送中的快递用户可以查看定位、确认送达 -->
+          <el-button v-if="item.status=='dilivering'" type="primary">确认送达</el-button>
+          <el-button
+            v-if="item.status=='dilivering'"
+            @click="jumpTo('/dashboard/'+$route.params.uid+'/express-location/'+item.eid)"
+          >快递定位</el-button>
+
+          <!-- 还未匹配到快递员的快递用户可以取消 -->
+          <el-button @click="cancelCheck(item)" v-if="item.status=='searching'" type="danger">取消订单</el-button>
         </div>
+
+        <!-- 还未提交的快递用户可以提交或者取消 -->
         <div v-if="type=='unsubmitted'" class="header-panel">
-          <el-button type="primary">提交需求</el-button>
+          <el-button @click="submitCheck(item)" type="primary">提交需求</el-button>
+          <el-button type="danger">取消需求</el-button>
         </div>
-        <div @click="dialogVisible = true" v-if="type=='need-comment'" class="header-panel">
+
+        <!-- 等待评价的快递用户可以评价 -->
+        <div @click="dialogVisible = true" v-if="type=='needComment'" class="header-panel">
           <el-button type="primary">评价</el-button>
         </div>
+
+        <!-- 匹配中的快递快递员可以接单 -->
+        <div v-if="type=='newExpress'" class="header-panel">
+          <el-button @click="deliveryCheck(item)" type="primary">确认接单</el-button>
+        </div>
+
+        <!-- 运送中的快递快递员可以上传凭证和确认送达 -->
+        <div v-if="type=='courierProcessing'" class="header-panel">
+          <el-button>上传凭证</el-button>
+          <el-button type="primary">确认送达</el-button>
+        </div>
       </div>
+
       <!-- 快递详情 -->
       <div class="express-detail">
-        <div class="courier-info">
+        <div
+          v-if="item.status!='created'&&item.status!='searching'&&item.status!='cancelled'"
+          class="courier-info"
+        >
           <div class="title">
             快递员：
-            <div class="text">邱超凡</div>
+            <div class="text">{{courierInfo.realname}}</div>
           </div>
           <div class="title">
             联系电话：
-            <div class="text">17612340000</div>
+            <div class="text">{{courierInfo.telephone}}</div>
           </div>
           <div>
             <div class="title">总体评分</div>
@@ -44,23 +78,28 @@
         </div>
         <div class="delivery-area">
           <div class="title">配送起点：</div>
-          <div class="text">上海市杨浦区中通杨浦分公司</div>
+          <div class="text">{{getRegionText(item.getRegion.split(","))}}{{item.getAddress}}</div>
           <div class="title">配送终点：</div>
-          <div class="text">上海市杨浦区四平路1239号同济大学</div>
+          <div class="text">{{getRegionText(item.sendRegion.split(","))}}{{item.sendAddress}}</div>
         </div>
         <div class="delivery-time title">
           配送时间段：
-          <div class="text">2019-05-14 14:00</div>
+          <div class="text">{{item.deliveryDate}} {{item.deliveryFrom}}</div>
           <div class="title">至</div>
-          <div class="text">2019-05-14 17:00</div>
+          <div class="text">{{item.deliveryDate}} {{item.deliveryTo}}</div>
         </div>
         <div class="delivery-fee title">
           配送费用：
-          <div class="text">10.00ETH</div>
+          <div class="text">{{item.deliveryFee}}ETH</div>
         </div>
       </div>
+
       <!-- 评价部分 -->
-      <el-dialog v-if="type=='need-comment'" :visible.sync="dialogVisible" title="评价快递员邱超凡">
+      <el-dialog
+        v-if="type=='needComment'"
+        :visible.sync="dialogVisible"
+        :title="'评价快递员'+courierInfo.realName"
+      >
         <el-form :model="commentInfo">
           <el-form-item label="评分">
             <br>
@@ -74,6 +113,14 @@
           </el-form-item>
         </el-form>
       </el-dialog>
+
+      <!-- 上传凭证部分 -->
+      <el-dialog
+        v-if="type=='courierNeedComment'&&item.status=='needComment'"
+        title="提示"
+        :visible.sync="uploadVisible"
+      ></el-dialog>
+
       <!-- 快递评价详情 -->
       <el-collapse v-if="type=='finished'" class="comment-detail">
         <el-collapse-item title="评价详情" class="rate">
@@ -87,55 +134,179 @@
           <div class="comment">师傅很不错，到达很准时，态度很棒！</div>
         </el-collapse-item>
       </el-collapse>
+
       <!-- 快递进展 -->
-      <el-steps class="express-steps" :active="0" finish-status="success" process-status="finish">
-        <el-step title="未提交">
-          <template slot="description">提交时间</template>
-        </el-step>
-        <el-step title="匹配快递员">
-          <template slot="description">接单时间</template>
-        </el-step>
-        <el-step title="运送中">
-          <template slot="description">送达时间</template>
-        </el-step>
-        <el-step title="评价">
-          <template slot="description">评价时间</template>
-        </el-step>
-        <el-step title="完成">
-          <template slot="description">完成时间</template>
-        </el-step>
+      <el-steps
+        v-if="item.status!='cancelled'"
+        class="express-steps"
+        :active="getStepIndex(item)"
+        finish-status="success"
+        process-status="finish"
+      >
+        <el-step title="提交需求"></el-step>
+        <el-step title="匹配快递员"></el-step>
+        <el-step title="运送中"></el-step>
+        <el-step title="评价"></el-step>
+        <el-step title="完成"></el-step>
       </el-steps>
     </el-card>
   </el-card>
 </template>
 
 <script>
+/* eslint-disable */
+import { CodeToText } from "element-china-area-data";
 export default {
   name: "ExpressList",
   props: {
     title: String,
-    type: String
+    type: String,
+    expressList: Array,
+    courierInfo: Object
   },
   data() {
     return {
+      CodeToText,
       commentInfo: {
         value: 0,
         comment: ""
       },
       value: 3.5,
       dialogVisible: false,
-      picDialogVisible: false
+      uploadVisible: false
     };
   },
   methods: {
     jumpTo(route) {
       this.$router.push(route);
+    },
+    getRegionText(regionArray) {
+      return (
+        this.CodeToText[regionArray[0]] +
+        this.CodeToText[regionArray[1]] +
+        this.CodeToText[regionArray[2]]
+      );
+    },
+    submitCheck(express) {
+      this.$confirm(
+        "将开始匹配快递员，若成功匹配后数据将写入区块链。之后若违约将会影响您的信用。是否确认？",
+        "提示",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }
+      )
+        .then(() => {
+          this.submitRequest(express);
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消"
+          });
+        });
+    },
+    deliveryCheck(express) {
+      this.$confirm(
+        "将确认接单，若成功接单后数据将写入区块链。之后若违约将会影响您的信用。是否确认？",
+        "提示",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }
+      )
+        .then(() => {
+          console.log(express);
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消"
+          });
+        });
+    },
+    cancelCheck(express) {
+      this.$confirm("正在为您火速搜索快递员，确定取消吗？", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.cancelRequest(express);
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消"
+          });
+        });
+    },
+    cancelRequest(express) {
+      fetch("/express", {
+        headers: new Headers({ "Content-Type": "application/json" }),
+        method: "PUT",
+        body: JSON.stringify({ eid: express.eid, status: "cancelled" })
+      }).then(res => {
+        if (res.ok) {
+          res.json().then(res => {
+            this.$message.success(res.info);
+            this.$router.push("/dashboard/" + this.route.params.uid);
+          });
+        } else {
+          console.log("Request error");
+          this.$message.error("请求出错");
+        }
+      });
+    },
+    submitRequest(express) {
+      fetch("/express", {
+        headers: new Headers({ "Content-Type": "application/json" }),
+        method: "PUT",
+        body: JSON.stringify({ eid: express.eid, status: "searching" })
+      }).then(res => {
+        if (res.ok) {
+          res.json().then(res => {
+            this.$message.success(res.info);
+            this.$router.push("/dashboard/" + this.route.params.uid);
+          });
+        } else {
+          console.log("Request error");
+          this.$message.error("请求出错");
+        }
+      });
+    },
+    getStepIndex(item) {
+      switch (item.status) {
+        case "created":
+          return 0;
+          break;
+        case "searching":
+          return 1;
+          break;
+        case "needComment":
+          return 3;
+          break;
+        case "finished":
+          return 5;
+          break;
+        default:
+          return 2;
+      }
     }
   }
 };
 </script>
 
 <style scoped>
+.info {
+  color: #606266;
+  font-size: 14px;
+}
+.express-holder {
+  margin-bottom: 15px;
+}
 .detail-header {
   display: flex;
   align-items: center;

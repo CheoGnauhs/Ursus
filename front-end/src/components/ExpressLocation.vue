@@ -17,14 +17,20 @@
 </template>
 
 <script>
+/* eslint-disable */
 export default {
   name: "ExpressLocation",
   data() {
     let self = this;
     return {
+      location: {
+        longitude: "",
+        latitude: "",
+        accuracy: ""
+      },
       courier: {
-        position: [121.499247, 31.2849917],
-        accuracy: 58
+        position: [0, 0],
+        accuracy: 0
       },
       lng: 0,
       lat: 0,
@@ -35,7 +41,7 @@ export default {
           events: {
             init(o) {
               // o 是高德地图定位插件实例
-              o.getCurrentPosition((status, result) => {
+              o.getCurrentPosition(async (status, result) => {
                 if (result && result.position) {
                   self.lng = result.position.lng;
                   self.lat = result.position.lat;
@@ -49,6 +55,35 @@ export default {
         }
       ]
     };
+  },
+  methods: {
+    getCourierLocation() {
+      fetch("/contract?eid=" + this.$route.params.eid).then(res => {
+        if (res.ok) {
+          res.json().then(res => {
+            console.log(res);
+            fetch("/location?uid=" + res.courierID).then(res => {
+              if (res.ok) {
+                res.json().then(res => {
+                  console.log(res);
+                  this.location.longitude = res.longitude;
+                  this.location.latitude = res.latitude;
+                  this.location.accuracy = res.accuracy;
+                  this.courier.position = [
+                    parseFloat(res.longitude),
+                    parseFloat(res.latitude)
+                  ];
+                  this.courier.accuracy = parseInt(res.accuracy);
+                });
+              }
+            });
+          });
+        }
+      });
+    }
+  },
+  mounted() {
+    this.getCourierLocation();
   }
 };
 </script>

@@ -18,23 +18,23 @@
     </div>
     <div class="control-panel">
       <span class="badge-holder">
-        <el-badge :value="expressNum.inprocessing" :hidden="expressNum.inprocessing==0">
-          <el-button type="text">正在进行中</el-button>
+        <el-badge :value="expressNum.processing" :hidden="expressNum.processing==0">
+          <el-button @click="jumpTo('/in-process')" type="text">正在进行中</el-button>
         </el-badge>
       </span>
       <span class="badge-holder" v-if="userInfo.type!='courier'">
         <el-badge :value="expressNum.unsubmitted" :hidden="expressNum.unsubmitted==0">
-          <el-button type="text">未提交</el-button>
+          <el-button @click="jumpTo('/unsubmitted')" type="text">未提交</el-button>
         </el-badge>
       </span>
       <span class="badge-holder">
-        <el-badge :value="expressNum.needcomment" :hidden="expressNum.needComment==0">
-          <el-button type="text">待评价</el-button>
+        <el-badge :value="expressNum.needcomment" :hidden="expressNum.needcomment==0">
+          <el-button @click="jumpTo('/need-comment')" type="text">待评价</el-button>
         </el-badge>
       </span>
       <span class="badge-holder">
         <el-badge :value="expressNum.finished" :hidden="expressNum.finished==0">
-          <el-button type="text">已完成</el-button>
+          <el-button @click="jumpTo('/finished')" type="text">已完成</el-button>
         </el-badge>
       </span>
     </div>
@@ -50,7 +50,7 @@ export default {
       id: "",
       expressNum: {
         unsubmitted: "",
-        inprocessing: "",
+        processing: "",
         needcomment: "",
         finished: ""
       },
@@ -63,10 +63,18 @@ export default {
     };
   },
   methods: {
+    jumpTo(route) {
+      if (this.userInfo.type == "owner") {
+        this.$router.push("/dashboard/" + this.userInfo.id + route);
+      } else {
+        this.$router.push("/courier/" + this.userInfo.id + route);
+      }
+    },
     getUserInfo() {
       fetch("/user?id=" + this.id).then(res => {
         if (res.ok) {
           res.json().then(res => {
+            this.userInfo.id = res.id;
             this.userInfo.realname = res.realname;
             this.userInfo.telephone = res.telephone;
             this.userInfo.bcAddress = res.bcAddress;
@@ -78,12 +86,12 @@ export default {
       });
     },
     getExpressCount() {
-      fetch("/sorted_express?uid=" + this.id).then(res => {
+      fetch("/expressnum?uid=" + this.id).then(res => {
         if (res.ok) {
           res.json().then(res => {
             console.log(res);
             this.expressNum.unsubmitted = res.unsubmitted;
-            this.expressNum.inprocessing = res.inprocessing;
+            this.expressNum.processing = res.processing;
             this.expressNum.needcomment = res.needcomment;
             this.expressNum.finished = res.finished;
           });

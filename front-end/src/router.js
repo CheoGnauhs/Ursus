@@ -15,6 +15,9 @@ import Notifications from "./components/Notifications";
 import ExpressLocation from "./components/ExpressLocation";
 import Courier from "./pages/Courier";
 import GetNewExpress from "./components/GetNewExpress";
+import Cancelled from "./components/Cancelled";
+import CourierInProcess from "./components/CourierInProcess";
+import CourierNeedComment from "./components/CourierNeedComment";
 
 const router = new VueRouter(
 	{
@@ -73,8 +76,12 @@ const router = new VueRouter(
 						component: Notifications
 					},
 					{
-						path: "express-location",
+						path: "express-location/:eid",
 						component: ExpressLocation
+					},
+					{
+						path: "cancelled",
+						component: Cancelled
 					}
 				]
 			},
@@ -92,15 +99,11 @@ const router = new VueRouter(
 					},
 					{
 						path: "in-process",
-						component: InProcess
-					},
-					{
-						path: "unsubmitted",
-						component: Unsubmitted
+						component: CourierInProcess
 					},
 					{
 						path: "need-comment",
-						component: NeedComment
+						component: CourierNeedComment
 					},
 					{
 						path: "finished",
@@ -121,10 +124,6 @@ const router = new VueRouter(
 					{
 						path: "notifications",
 						component: Notifications
-					},
-					{
-						path: "express-location",
-						component: ExpressLocation
 					}
 				]
 			}

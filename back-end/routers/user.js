@@ -42,7 +42,7 @@ router.post('/user', function (req, res) {
                     id: user.getDataValue('id')
                 }
             }
-        ).then(user => {
+        ).then(() => {
             User.findOne(
                 {
                     where:
@@ -99,7 +99,7 @@ router.delete('/user', function (req, res) {
         { where: { id: req.query.id } }
     ).then(() => {
         console.log("Deleted");
-        res.status(200).send({ statue: "success", info: "deleted" });
+        res.status(200).send({ status: "success", info: "deleted" });
     }).catch(err => {
         console.log(err);
         res.status(400).send(err);

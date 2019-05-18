@@ -12,8 +12,12 @@ Location.init(
             allowNull: false,
             primaryKey: true
         },
-        // 用户定位
-        location: {
+        // 纬度
+        latitude: {
+            type: Sequelize.STRING
+        },
+        // 经度
+        longitude: {
             type: Sequelize.STRING
         },
         // 精准度

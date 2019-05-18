@@ -1,12 +1,12 @@
 <template>
-  <ExpressList title="进行中的快递" type="in-process" :expressList="expressList"></ExpressList>
+  <ExpressList title="已取消的快递" type="cancelled" :expressList="expressList"></ExpressList>
 </template>
 
 <script>
 /* eslint-disable */
 import ExpressList from "./ExpressList";
 export default {
-  name: "InProcess",
+  name: "Cancelled",
   components: { ExpressList },
   data() {
     return {
@@ -18,23 +18,12 @@ export default {
       fetch(
         "/user_status_expresses?uid=" +
           this.$route.params.uid +
-          "&status=searching"
+          "&status=cancelled"
       ).then(res => {
         if (res.ok) {
           res.json().then(res => {
             console.log(res);
             this.expressList = res;
-            fetch(
-              "/user_status_expresses?uid=" +
-                this.$route.params.uid +
-                "&status=delivering"
-            ).then(res => {
-              if (res.ok) {
-                res.json().then(res => {
-                  this.expressList.concat(res);
-                });
-              }
-            });
           });
         } else {
           console.log("request error");

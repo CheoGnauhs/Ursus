@@ -1,22 +1,28 @@
 <template>
-  <ExpressList title="已完成的快递" type="needComment" :expressList="expressList"></ExpressList>
+  <ExpressList
+    title="等待评价的快递"
+    type="courierNeedComment"
+    :expressList="expressList"
+    :courierInfo="courierInfo"
+  ></ExpressList>
 </template>
 
 <script>
 /* eslint-disable */
 import ExpressList from "./ExpressList";
 export default {
-  name: "NeedComment",
+  name: "CourierNeedComment",
   components: { ExpressList },
   data() {
     return {
-      expressList: []
+      expressList: [],
+      courierInfo: {}
     };
   },
   methods: {
     getExpressInfo() {
       fetch(
-        "/user_status_expresses?uid=" +
+        "/user_status_contracts?uid=" +
           this.$route.params.uid +
           "&status=needComment"
       ).then(res => {
@@ -29,10 +35,22 @@ export default {
           console.log("request error");
         }
       });
+    },
+    getCourierInfo() {
+      fetch("/user?id=" + this.$route.params.uid).then(res => {
+        if (res.ok) {
+          res.json().then(res => {
+            this.courierInfo = res;
+          });
+        } else {
+          console.log("Request error");
+        }
+      });
     }
   },
   mounted() {
     this.getExpressInfo();
+    this.getCourierInfo();
   }
 };
 </script>
