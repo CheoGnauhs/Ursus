@@ -79,7 +79,7 @@ const router = new VueRouter(
 				]
 			},
 			{
-				path: "/courier",
+				path: "/courier/:uid",
 				component: Courier,
 				children: [
 					{

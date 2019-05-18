@@ -22,7 +22,7 @@
           <el-button type="text">正在进行中</el-button>
         </el-badge>
       </span>
-      <span class="badge-holder">
+      <span class="badge-holder" v-if="userInfo.type!='courier'">
         <el-badge value="1">
           <el-button type="text">未提交</el-button>
         </el-badge>
@@ -51,7 +51,8 @@ export default {
       userInfo: {
         realname: "",
         telephone: "",
-        bcAddress: ""
+        bcAddress: "",
+        type: ""
       }
     };
   },
@@ -63,6 +64,7 @@ export default {
           this.userInfo.realname = res.realname;
           this.userInfo.telephone = res.telephone;
           this.userInfo.bcAddress = res.bcAddress;
+          this.userInfo.type = res.usertype;
         });
       } else {
         console.log("request error!");
@@ -104,6 +106,6 @@ export default {
   border: 0;
 }
 .badge-holder {
-  width: 25%;
+  width: 100%;
 }
 </style>
