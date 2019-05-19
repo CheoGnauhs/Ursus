@@ -1,5 +1,11 @@
 <template>
-  <ExpressList title="已完成的快递" type="finished" :expressList="expressList"></ExpressList>
+  <ExpressList
+    title="已完成的快递"
+    type="finished"
+    :expressList="expressList"
+    :courierInfo="courierInfo"
+    :commentContent="commentContent"
+  ></ExpressList>
 </template>
 
 <script>
@@ -10,7 +16,9 @@ export default {
   components: { ExpressList },
   data() {
     return {
-      expressList: []
+      expressList: [],
+      courierInfo: [],
+      commentContent: []
     };
   },
   methods: {
@@ -22,13 +30,55 @@ export default {
       ).then(res => {
         if (res.ok) {
           res.json().then(res => {
-            console.log(res);
-            this.expressList = res;
+            res.forEach(e => {
+              this.expressList.push(e);
+            });
+            this.getCourierInfo();
+            this.getCommentInfo();
           });
         } else {
           console.log("request error");
         }
       });
+    },
+    getCourierInfo() {
+      let promiseArray = [];
+      if (this.expressList[0] != null) {
+        this.expressList.forEach(e => {
+          promiseArray.push(fetch("/eid_to_courier?eid=" + e.eid));
+        });
+        Promise.all(promiseArray).then(results => {
+          results.forEach(e => {
+            e.json().then(res => {
+              this.courierInfo.push(res);
+            });
+          });
+        });
+      }
+    },
+    getCommentInfo() {
+      let promiseArray = [];
+      if (this.expressList[0] != null) {
+        this.expressList.forEach(e => {
+          promiseArray.push(
+            fetch("/type_eid_comments", {
+              headers: new Headers({ "Content-Type": "application/json" }),
+              method: "POST",
+              body: JSON.stringify({
+                commentType: "o2c",
+                eid: e.eid
+              })
+            })
+          );
+        });
+        Promise.all(promiseArray).then(results => {
+          results.forEach(e => {
+            e.json().then(res => {
+              this.commentContent.push(res);
+            });
+          });
+        });
+      }
     }
   },
   mounted() {

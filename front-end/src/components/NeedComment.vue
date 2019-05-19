@@ -1,5 +1,10 @@
 <template>
-  <ExpressList title="已完成的快递" type="needComment" :expressList="expressList"></ExpressList>
+  <ExpressList
+    title="已完成的快递"
+    type="needComment"
+    :expressList="expressList"
+    :courierInfo="courierInfo"
+  ></ExpressList>
 </template>
 
 <script>
@@ -10,7 +15,8 @@ export default {
   components: { ExpressList },
   data() {
     return {
-      expressList: []
+      expressList: [],
+      courierInfo: []
     };
   },
   methods: {
@@ -22,13 +28,30 @@ export default {
       ).then(res => {
         if (res.ok) {
           res.json().then(res => {
-            console.log(res);
-            this.expressList = res;
+            res.forEach(e => {
+              this.expressList.push(e);
+            });
+            this.getCourierInfo();
           });
         } else {
           console.log("request error");
         }
       });
+    },
+    getCourierInfo() {
+      let promiseArray = [];
+      if (this.expressList[0] != null) {
+        this.expressList.forEach(e => {
+          promiseArray.push(fetch("/eid_to_courier?eid=" + e.eid));
+        });
+        Promise.all(promiseArray).then(results => {
+          results.forEach(e => {
+            e.json().then(res => {
+              this.courierInfo.push(res);
+            });
+          });
+        });
+      }
     }
   },
   mounted() {

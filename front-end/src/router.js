@@ -9,7 +9,6 @@ import Unsubmitted from "./components/Unsubmitted";
 import NeedComment from "./components/NeedComment";
 import Finished from './components/Finished';
 import UserInfo from "./components/UserInfo";
-import BlockInfo from "./components/BlockInfo";
 import CreditInfo from "./components/CreditInfo";
 import Notifications from "./components/Notifications";
 import ExpressLocation from "./components/ExpressLocation";
@@ -64,10 +63,6 @@ const router = new VueRouter(
 						component: UserInfo
 					},
 					{
-						path: "block-info",
-						component: BlockInfo
-					},
-					{
 						path: "credit-info",
 						component: CreditInfo
 					},
@@ -112,10 +107,6 @@ const router = new VueRouter(
 					{
 						path: "user-info",
 						component: UserInfo
-					},
-					{
-						path: "block-info",
-						component: BlockInfo
 					},
 					{
 						path: "credit-info",

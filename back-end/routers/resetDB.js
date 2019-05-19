@@ -5,6 +5,8 @@ const Express = require('../models/Express');
 const Contract = require('../models/Contract');
 const ExpressNum = require('../models/ExpressNum');
 const Location = require('../models/Location');
+const Attachment = require('../models/Attachment');
+const Comment = require('../models/Comment');
 
 // 重新创建数据库
 router.post('/resetDB', function (req, res) {
@@ -24,6 +26,12 @@ router.post('/resetDB', function (req, res) {
     Location.sync({ force: true }).then(res => {
         console.log(res);
     });
+    Attachment.sync({ force: true }).then(res => {
+        console.log(res);
+    });
+    Comment.sync({ force: true }).then(res => {
+        console.log(res);
+    })
     console.log("success");
     res.send({ status: "success", info: "reconstruced" });
 });

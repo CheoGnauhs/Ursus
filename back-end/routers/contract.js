@@ -113,6 +113,11 @@ router.put('/contract', function (req, res) {
         deliveryFee: req.body.deliveryFee,
         status: req.body.status
     };
+    for (let att in data) {
+        if (data[att] === null || data[att] === undefined) {
+            delete data[att];
+        }
+    }
     Contract.update(
         data,
         {

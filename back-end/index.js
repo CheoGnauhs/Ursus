@@ -44,6 +44,12 @@ app.use(require('./routers/contracts'));
 app.use(require('./routers/login'));
 app.use(require('./routers/expressnum'));
 app.use(require('./routers/location'));
+app.use(require('./routers/attachment'));
+app.use(require('./routers/upload'));
+app.use(require('./routers/attachments'));
+app.use(require('./routers/confirm'));
+app.use(require('./routers/comment'));
+app.use(require('./routers/comments'));
 
 // 获取区块链中目前激活的帐号
 app.get('/getaccounts', function (req, res) {
