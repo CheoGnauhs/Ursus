@@ -1,58 +1,21 @@
 <template>
   <div>
-    <el-card>
-      <div slot="header">信用信息</div>
-      <div>
-        <div class="title">
-          过往评价总数：
-          <div class="text">1</div>
-        </div>
-        <div class="title">
-          过往整体评级：
-          <div class="text">
-            <el-rate
-              v-model="value"
-              disabled
-              show-score
-              text-color="#ff9900"
-              score-template="{value}"
-            ></el-rate>
-          </div>
-        </div>
-      </div>
-    </el-card>
     <el-card class="details">
       <div slot="header">过往评价</div>
-      <el-collapse class="comment-detail">
+      <el-collapse v-for="(comment,index) in comments" :key="index" class="comment-detail">
         <el-collapse-item class="rate">
           <template slot="title">
-            <div class="time">2019-05-13</div>
-            <div class="from">来自于:0xB22ca5601532DD25407D767769ECDe75a7DF3E1A</div>
+            <div class="time">{{comment.UpdatedAt.split('T')[0]}}</div>
+            <div class="from">{{comment.UpdatedAt.split('T')[1].split('.')[0]}}</div>
           </template>
           <el-rate
-            v-model="value"
+            v-model="comment.value"
             disabled
             show-score
             text-color="#ff9900"
             score-template="{value}"
           ></el-rate>
-          <div class="comment">师傅很不错，到达很准时，态度很棒！</div>
-        </el-collapse-item>
-      </el-collapse>
-      <el-collapse class="comment-detail">
-        <el-collapse-item class="rate">
-          <template slot="title">
-            <div class="time">2019-05-14</div>
-            <div class="from">来自于:0xB22ca5601532DD25407D767769ECDe75a7DF3E1A</div>
-          </template>
-          <el-rate
-            v-model="value"
-            disabled
-            show-score
-            text-color="#ff9900"
-            score-template="{value}"
-          ></el-rate>
-          <div class="comment">师傅很不错，到达很准时，态度很棒！</div>
+          <div class="comment">{{comment.content}}</div>
         </el-collapse-item>
       </el-collapse>
     </el-card>
@@ -60,12 +23,40 @@
 </template>
 
 <script>
+/* eslint-disable */
 export default {
   name: "CreditInfo",
   data() {
     return {
-      value: 3.5
+      value: 3.5,
+      comments: []
     };
+  },
+  methods: {
+    getComments() {
+      fetch("/from_user_comments", {
+        headers: new Headers({ "Content-Type": "application/json" }),
+        method: "POST",
+        body: JSON.stringify({
+          fromID: this.$route.params.uid
+        })
+      }).then(res => {
+        if (res.ok) {
+          res.json().then(res => {
+            res.forEach(e => {
+              if (e != null) {
+                this.comments.push(e);
+              }
+            });
+          });
+        } else {
+          console.log("request error");
+        }
+      });
+    }
+  },
+  mounted() {
+    this.getComments();
   }
 };
 </script>

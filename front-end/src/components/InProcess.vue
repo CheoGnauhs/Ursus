@@ -4,6 +4,7 @@
     type="in-process"
     :expressList="expressList"
     :courierInfo="courierInfo"
+    :imgInfo="imgInfo"
   ></ExpressList>
 </template>
 
@@ -16,7 +17,8 @@ export default {
   data() {
     return {
       expressList: [],
-      courierInfo: []
+      courierInfo: [],
+      imgInfo: []
     };
   },
   methods: {
@@ -29,7 +31,9 @@ export default {
         if (res.ok) {
           res.json().then(res => {
             res.forEach(e => {
-              this.expressList.push(e);
+              if (e != null) {
+                this.expressList = res;
+              }
             });
             fetch(
               "/user_status_expresses?uid=" +
@@ -42,6 +46,7 @@ export default {
                     this.expressList.push(e);
                   });
                   this.getCourierInfo();
+                  this.getImgInfo();
                 });
               }
             });
@@ -66,25 +71,21 @@ export default {
         });
       }
     },
-    getCourierID(eid) {
-      fetch("/contract?eid=" + eid).then(res => {
-        if (res.ok) {
-          res.json().then(res => {
-            fetch("/user?id=" + res.courierID).then(res => {
-              if (res.ok) {
-                res.json().then(res => {
-                  console.log(res);
-                  return res;
-                });
-              } else {
-                console.log("request error");
-              }
+    getImgInfo() {
+      let promiseArray = [];
+      if (this.expressList[0] != null) {
+        this.expressList.forEach(e => {
+          promiseArray.push(fetch("/attachments?eid=" + e.eid));
+        });
+        Promise.all(promiseArray).then(results => {
+          results.forEach(e => {
+            e.json().then(res => {
+              this.imgInfo.push(res);
             });
+            console.log(this.imgInfo);
           });
-        } else {
-          console.log("request error");
-        }
-      });
+        });
+      }
     }
   },
   mounted() {

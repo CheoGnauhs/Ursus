@@ -4,6 +4,7 @@
     type="courierFinished"
     :expressList="expressList"
     :courierInfo="courierInfo"
+    :imgInfo="imgInfo"
   ></ExpressList>
 </template>
 
@@ -16,7 +17,8 @@ export default {
   data() {
     return {
       expressList: [],
-      courierInfo: {}
+      courierInfo: [],
+      imgInfo: []
     };
   },
   methods: {
@@ -29,7 +31,14 @@ export default {
         if (res.ok) {
           res.json().then(res => {
             console.log(res);
-            this.expressList = res;
+            res.forEach(e => {
+              if (e != null) {
+                this.expressList.push(e);
+              }
+            });
+            console.log(this.expressList);
+            this.getCourierInfo();
+            this.getImgInfo();
           });
         } else {
           console.log("request error");
@@ -37,20 +46,39 @@ export default {
       });
     },
     getCourierInfo() {
-      fetch("/user?id=" + this.$route.params.uid).then(res => {
-        if (res.ok) {
-          res.json().then(res => {
-            this.courierInfo = res;
+      let promiseArray = [];
+      if (this.expressList[0] != null) {
+        this.expressList.forEach(e => {
+          promiseArray.push(fetch("/eid_to_courier?eid=" + e.eid));
+        });
+        Promise.all(promiseArray).then(results => {
+          results.forEach(e => {
+            e.json().then(res => {
+              this.courierInfo.push(res);
+            });
           });
-        } else {
-          console.log("Request error");
-        }
-      });
+        });
+      }
+    },
+    getImgInfo() {
+      let promiseArray = [];
+      if (this.expressList[0] != null) {
+        this.expressList.forEach(e => {
+          promiseArray.push(fetch("/attachments?eid=" + e.eid));
+        });
+        Promise.all(promiseArray).then(results => {
+          results.forEach(e => {
+            e.json().then(res => {
+              this.imgInfo.push(res);
+            });
+            console.log(this.imgInfo);
+          });
+        });
+      }
     }
   },
   mounted() {
     this.getExpressInfo();
-    this.getCourierInfo();
   }
 };
 </script>

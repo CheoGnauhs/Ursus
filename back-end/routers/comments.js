@@ -26,4 +26,32 @@ router.post("/type_eid_comments", function (req, res) {
     })
 });
 
+router.post("/to_user_comments", function (req, res) {
+    let toID = req.body.toID;
+    Comment.findAll(
+        {
+            where: {
+                toID: toID
+            }
+        }
+    ).then(comments => {
+        console.log(comments);
+        res.status(200).send(comments);
+    })
+});
+
+router.post("/from_user_comments", function (req, res) {
+    let fromID = req.body.fromID;
+    Comment.findAll(
+        {
+            where: {
+                fromID: fromID
+            }
+        }
+    ).then(comments => {
+        console.log(comments);
+        res.status(200).send(comments);
+    })
+});
+
 module.exports = router;

@@ -1,9 +1,10 @@
 <template>
   <ExpressList
-    title="已完成的快递"
+    title="待评价的快递"
     type="needComment"
     :expressList="expressList"
     :courierInfo="courierInfo"
+    :imgInfo="imgInfo"
   ></ExpressList>
 </template>
 
@@ -16,7 +17,8 @@ export default {
   data() {
     return {
       expressList: [],
-      courierInfo: []
+      courierInfo: [],
+      imgInfo: []
     };
   },
   methods: {
@@ -29,9 +31,12 @@ export default {
         if (res.ok) {
           res.json().then(res => {
             res.forEach(e => {
-              this.expressList.push(e);
+              if (e != null) {
+                this.expressList = res;
+              }
             });
             this.getCourierInfo();
+            this.getImgInfo();
           });
         } else {
           console.log("request error");
@@ -49,6 +54,22 @@ export default {
             e.json().then(res => {
               this.courierInfo.push(res);
             });
+          });
+        });
+      }
+    },
+    getImgInfo() {
+      let promiseArray = [];
+      if (this.expressList[0] != null) {
+        this.expressList.forEach(e => {
+          promiseArray.push(fetch("/attachments?eid=" + e.eid));
+        });
+        Promise.all(promiseArray).then(results => {
+          results.forEach(e => {
+            e.json().then(res => {
+              this.imgInfo.push(res);
+            });
+            console.log(this.imgInfo);
           });
         });
       }

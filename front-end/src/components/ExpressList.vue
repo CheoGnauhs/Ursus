@@ -159,6 +159,19 @@
         </el-collapse-item>
       </el-collapse>
 
+      <el-collapse
+        v-if="(type=='finished'||type=='needComment'||type=='in-process'||type=='courierFinished'||type=='courierProcessing')&&imgInfo.length!=0"
+        class="comment-detail"
+      >
+        <el-collapse-item title="快递图片" class="pic">
+          <el-image
+            v-for="(pic,i) in imgInfo[index]"
+            :key="i"
+            :src="'http://localhost:9527/ipfs/'+pic.url"
+          ></el-image>
+        </el-collapse-item>
+      </el-collapse>
+
       <!-- 快递进展 -->
       <el-steps
         v-if="item.status!='cancelled'"
@@ -187,7 +200,8 @@ export default {
     type: String,
     expressList: Array,
     courierInfo: Array,
-    commentContent: Array
+    commentContent: Array,
+    imgInfo: Array
   },
   data() {
     return {
@@ -390,7 +404,7 @@ export default {
         }
       )
         .then(() => {
-          console.log(express);
+          this.confirmRequest(express);
         })
         .catch(() => {
           this.$message({
@@ -401,7 +415,7 @@ export default {
     },
     // 确认收货
     confirmRequest(express) {
-      fetch("/comfirm", {
+      fetch("/confirm", {
         headers: new Headers({ "Content-Type": "application/json" }),
         method: "POST",
         body: JSON.stringify({
@@ -441,7 +455,7 @@ export default {
     deliveryRequest(express) {
       fetch("/contract", {
         headers: new Headers({ "Content-Type": "application/json" }),
-        methods: "POST",
+        method: "POST",
         body: JSON.stringify({
           eid: express.eid,
           ownerID: express.uid,

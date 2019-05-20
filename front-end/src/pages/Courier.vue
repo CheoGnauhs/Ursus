@@ -1,7 +1,7 @@
 <template>
   <el-container class="dashboard">
     <el-header class="header">
-      <HeaderBar :userInfo="userInfo" :type="'courier'"></HeaderBar>
+      <CourierHeaderBar :userInfo="userInfo" :type="'courier'"></CourierHeaderBar>
     </el-header>
     <el-container class="content">
       <el-aside width="200px">
@@ -16,11 +16,11 @@
 
 <script>
 /* eslint-disable */
-import HeaderBar from "../components/HeaderBar";
+import CourierHeaderBar from "../components/CourierHeaderBar";
 import CourierAsidePanel from "../components/CourierAsidePanel";
 export default {
   name: "Courier",
-  components: { HeaderBar, CourierAsidePanel },
+  components: { CourierHeaderBar, CourierAsidePanel },
   data() {
     return {
       id: "",

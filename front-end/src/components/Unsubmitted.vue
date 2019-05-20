@@ -22,8 +22,11 @@ export default {
       ).then(res => {
         if (res.ok) {
           res.json().then(res => {
-            console.log(res);
-            this.expressList = res;
+            res.forEach(e => {
+              if (e != null) {
+                this.expressList = res;
+              }
+            });
           });
         } else {
           console.log("request error");

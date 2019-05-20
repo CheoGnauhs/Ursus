@@ -27,8 +27,7 @@
       </template>
       <el-menu-item-group>
         <el-menu-item @click="jumpTo('/dashboard/'+userInfo.id+'/user-info')" index="2-1">个人资料</el-menu-item>
-        <el-menu-item @click="jumpTo('/dashboard/'+userInfo.id+'/block-info')" index="2-2">区块信息</el-menu-item>
-        <el-menu-item @click="jumpTo('/dashboard/'+userInfo.id+'/credit-info')" index="2-3">信用信息</el-menu-item>
+        <el-menu-item @click="jumpTo('/dashboard/'+userInfo.id+'/credit-info')" index="2-2">信用信息</el-menu-item>
       </el-menu-item-group>
     </el-submenu>
     <el-menu-item @click="jumpTo('/dashboard/'+userInfo.id+'/notifications')" index="3">消息中心</el-menu-item>

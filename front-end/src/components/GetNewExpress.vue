@@ -6,7 +6,7 @@
 /* eslint-disable */
 import ExpressList from "./ExpressList";
 export default {
-  name: "Cancelled",
+  name: "GetNewExpress",
   components: { ExpressList },
   data() {
     return {
@@ -18,8 +18,11 @@ export default {
       fetch("/status_expresses?status=searching").then(res => {
         if (res.ok) {
           res.json().then(res => {
-            console.log(res);
-            this.expressList = res;
+            res.forEach(e => {
+              if (e != null) {
+                this.expressList.push(e);
+              }
+            });
           });
         } else {
           console.log("request error");

@@ -17,6 +17,7 @@ import GetNewExpress from "./components/GetNewExpress";
 import Cancelled from "./components/Cancelled";
 import CourierInProcess from "./components/CourierInProcess";
 import CourierNeedComment from "./components/CourierNeedComment";
+import CourierFinished from "./components/CourierFinished";
 
 const router = new VueRouter(
 	{
@@ -102,7 +103,7 @@ const router = new VueRouter(
 					},
 					{
 						path: "finished",
-						component: Finished
+						component: CourierFinished
 					},
 					{
 						path: "user-info",
