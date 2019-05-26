@@ -57,7 +57,7 @@ Express.init(
             type: Sequelize.STRING,
             allowNull: false
         },
-        // 快递花费比特币
+        // 快递花费以太币
         deliveryFee: {
             type: Sequelize.DECIMAL(10, 2)
         },

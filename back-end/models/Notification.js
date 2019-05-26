@@ -6,6 +6,11 @@ class Notification extends Sequelize.Model { };
 
 Notification.init(
     {
+        id: {
+            type: Sequelize.INTEGER,
+            autoIncrement: true,
+            primaryKey: true
+        },
         // 接受消息的用户
         uid: {
             type: Sequelize.STRING,
@@ -18,6 +23,10 @@ Notification.init(
         // 时间戳
         timestamp: {
             type: Sequelize.timestamp,
+        },
+        // 是否已读
+        isRead: {
+            type: Sequelize.BOOLEAN
         }
     },
     {

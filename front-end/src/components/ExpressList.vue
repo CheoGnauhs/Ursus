@@ -210,6 +210,7 @@ export default {
         value: 0,
         comment: ""
       },
+      balance: "",
       uploadEID: "",
       value: 3.5,
       dialogVisible: false,
@@ -356,9 +357,18 @@ export default {
     // 提交需求前用户确认
     submitCheck(express) {
       this.$confirm(
-        "将开始匹配快递员，若成功匹配后数据将写入区块链。之后若违约将会影响您的信用。是否确认？",
+        "将开始匹配快递员，若成功匹配后数据将写入区块链。之后若违约将会影响您的信用。" +
+          "<br>" +
+          "您的账户中现有<em>" +
+          this.balance +
+          "</em>以太币, 该操作将从您的账户中扣除<em>" +
+          express.deliveryFee +
+          "</em>以太币" +
+          "<br>" +
+          "是否确认？",
         "提示",
         {
+          dangerouslyUseHTMLString: true,
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
@@ -506,7 +516,23 @@ export default {
           this.$message.error("请求出错");
         }
       });
+    },
+    // 获取用户账户余额
+    getUserBalance() {
+      fetch("/balance?id=" + this.$route.params.uid).then(res => {
+        if (res.ok) {
+          res.json().then(res => {
+            this.balance = parseFloat(res.balance).toFixed(2);
+          });
+        } else {
+          console.log(res);
+          console.log("Request error");
+        }
+      });
     }
+  },
+  mounted() {
+    this.getUserBalance();
   }
 };
 </script>

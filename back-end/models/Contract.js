@@ -24,7 +24,7 @@ Contract.init(
         },
         // 快递费
         deliveryFee: {
-            type: Sequelize.INTEGER,
+            type: Sequelize.DECIMAL(10, 2),
             allowNull: false
         },
         // 合约状态
