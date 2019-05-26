@@ -71,7 +71,6 @@ export default {
             e.json().then(res => {
               this.imgInfo.push(res);
             });
-            console.log(this.imgInfo);
           });
         });
       }

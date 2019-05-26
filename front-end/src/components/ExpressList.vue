@@ -43,7 +43,11 @@
         </div>
 
         <!-- 等待评价的快递用户可以评价 -->
-        <div @click="dialogVisible = true" v-if="type=='needComment'" class="header-panel">
+        <div
+          @click="dialogVisible = true"
+          v-if="type=='needComment'||type=='courierNeedComment'"
+          class="header-panel"
+        >
           <el-button type="primary">评价</el-button>
         </div>
 
@@ -76,16 +80,6 @@
             联系电话：
             <div class="text">{{courierInfo[index]==null?"":courierInfo[index].telephone}}</div>
           </div>
-          <div>
-            <div class="title">总体评分</div>
-            <el-rate
-              v-model="value"
-              disabled
-              show-score
-              text-color="#ff9900"
-              score-template="{value}"
-            ></el-rate>
-          </div>
         </div>
         <div class="delivery-area">
           <div class="title">配送起点：</div>
@@ -107,9 +101,9 @@
 
       <!-- 用户评价部分 -->
       <el-dialog
-        v-if="type=='needComment'"
+        v-if="type=='needComment'||type=='courierNeedComment'"
         :visible.sync="dialogVisible"
-        :title="'评价'+courierInfo[index]==null?'':courierInfo[index].realname"
+        :title="'评价'"
       >
         <el-form :model="commentInfo">
           <el-form-item label="评分">
@@ -303,24 +297,6 @@ export default {
         if (res.ok) {
           res.json().then(res => {
             this.$message.success(res.info);
-          });
-          fetch("/express", {
-            headers: new Headers({ "Content-Type": "application/json" }),
-            method: "PUT",
-            body: JSON.stringify({
-              eid: item.eid,
-              status: "finished"
-            })
-          }).then(res => {
-            if (res.ok) {
-              if (this.$route.path.indexOf("dashboard") != -1) {
-                this.$router.push("/dashboard/" + this.$route.params.uid);
-              } else {
-                this.$router.push("/courier/" + this.$route.params.uid);
-              }
-            } else {
-              console.log("request error");
-            }
           });
         } else {
           this.$message.error("评论失败");

@@ -47,7 +47,7 @@ export default {
             this.userInfo.username = res.username;
             this.userInfo.name = res.realname;
             this.userInfo.bcAddress = res.bcAddress;
-            this.telephone = res.telephone;
+            this.userInfo.telephone = res.telephone;
           });
         } else {
           console.log(res);

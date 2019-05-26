@@ -1,6 +1,7 @@
 // '/comment' 路由
 const router = require('express').Router();
 const Comment = require('../models/Comment');
+const Express = require('../models/Express');
 
 router.patch("/comment", function (req, res) {
     Comment.sync({ force: true }).then(res => {
@@ -35,8 +36,35 @@ router.post("/comment", function (req, res) {
     Comment.create(
         data
     ).then(comment => {
-        console.log(comment);
-        res.status(200).send({ comment: comment, status: "success", info: "评论创建完成" })
+        Comment.count(
+            {
+                where:
+                    { eid: comment.getDataValue('eid') }
+            }
+        ).then(count => {
+            console.log(count);
+            if (count == 2) {
+                Express.update(
+                    { status: "finished" },
+                    {
+                        where:
+                            { eid: comment.getDataValue('eid') }
+                    }
+                ).then(response => {
+                    console.log(response);
+                    res.status(200).send({ comment: comment, status: "success", info: "评论创建完成" })
+                }).catch(err => {
+                    console.log(err);
+                    res.status(400).send(err);
+                })
+            }
+            else {
+                res.status(200).send({ comment: comment, status: "success", info: "评论创建完成" })
+            }
+        }).catch(err => {
+            console.log(err);
+            res.status(400).send(err);
+        })
     });
 });
 

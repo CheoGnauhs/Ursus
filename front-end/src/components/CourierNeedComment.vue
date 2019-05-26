@@ -16,7 +16,7 @@ export default {
   data() {
     return {
       expressList: [],
-      courierInfo: {}
+      courierInfo: []
     };
   },
   methods: {
@@ -30,7 +30,7 @@ export default {
           res.json().then(res => {
             res.forEach(e => {
               if (e != null) {
-                this.expressList = res;
+                this.expressList.push(e);
               }
             });
             this.getCourierInfo();

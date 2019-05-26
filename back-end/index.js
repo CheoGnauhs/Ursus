@@ -51,6 +51,7 @@ app.use(require('./routers/confirm'));
 app.use(require('./routers/comment'));
 app.use(require('./routers/comments'));
 app.use(require('./routers/balance'));
+app.use(require('./routers/credit'));
 
 // 获取区块链中目前激活的帐号
 app.get('/getaccounts', function (req, res) {
