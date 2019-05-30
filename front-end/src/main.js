@@ -30,7 +30,7 @@ Vue.prototype.initWeb3 = function () {
   window.ethereum.enable();
   var Eth = require('ethjs-query');
   var EthContract = require('ethjs-contract');
-  let ExpressContractAdd = "0xa29e9C77A4898b7A5c43a20F68Dd14bDf0D22F71";
+  let ExpressContractAdd = "0x91eaF31e7D8d0a30c654295C6797C24C047FC2f1";
   Vue.prototype.web3js = window.web3;
   Vue.prototype.web3 = new Web3(window.web3.currentProvider);
   if (typeof this.web3js != "undefined") {

@@ -22,15 +22,17 @@
         <!-- in-process状态需要细分 -->
         <div v-if="type=='in-process'" class="header-panel">
           <!-- 运送中的快递，用户可以查看定位、确认送达 -->
+
           <el-button
-            @click="confirmCheck(item)"
-            v-if="item.status=='delivering'||'courierChecked'"
-            type="primary"
-          >确认送达</el-button>
-          <el-button
-            v-if="item.status=='delivering'||'courierChecked'"
+            v-if="item.status=='delivering'||item.status=='courierChecked'||item.status=='ownerChecked'"
             @click="jumpTo('/dashboard/'+$route.params.uid+'/express-location/'+item.eid)"
           >快递定位</el-button>
+          <el-button
+            @click="confirmCheck(item)"
+            v-if="item.status=='delivering'||item.status=='courierChecked'"
+            type="primary"
+          >确认送达</el-button>
+          <el-button v-if="item.status=='ownerChecked'" type="primary" :disabled="true">等待快递员确认</el-button>
 
           <!-- 还未匹配到快递员的快递用户可以取消 -->
           <el-button @click="cancelCheck(item)" v-if="item.status=='searching'" type="danger">取消订单</el-button>
@@ -45,10 +47,17 @@
         <!-- 等待评价的快递用户可以评价 -->
         <div
           @click="dialogVisible = true"
-          v-if="type=='needComment'||type=='courierNeedComment'"
+          v-if="item.status=='needComment'||item.status=='courierCommented'||item.status=='ownerCommented'"
           class="header-panel"
         >
-          <el-button type="primary">评价</el-button>
+          <el-button
+            v-if="type=='courierNeedComment'&&(item.status=='needComment'||item.status=='ownerCommented')"
+            type="primary"
+          >评价用户</el-button>
+          <el-button
+            v-if="type=='needComment'&&(item.status=='needComment'||item.status=='courierCommented')"
+            type="primary"
+          >评价快递员</el-button>
         </div>
 
         <!-- 快递员操作 -->
@@ -59,8 +68,13 @@
 
         <!-- 运送中的快递快递员可以上传凭证和确认送达 -->
         <div v-if="type=='courierProcessing'" class="header-panel">
-          <el-button @click="uploadCheck(item)">上传凭证</el-button>
-          <el-button @click="courierConfirmCheck(item)" type="primary">确认送达</el-button>
+          <el-button v-if="item.status=='delivering'" @click="uploadCheck(item)">上传凭证</el-button>
+          <el-button
+            v-if="item.status=='delivering'||item.status=='ownerChecked'"
+            @click="courierConfirmCheck(item)"
+            type="primary"
+          >确认送达</el-button>
+          <el-button v-if="item.status=='courierChecked'" :disabled="true" type="primary">等待用户确认</el-button>
         </div>
       </div>
 
@@ -101,7 +115,7 @@
 
       <!-- 用户评价部分 -->
       <el-dialog
-        v-if="type=='needComment'||type=='courierNeedComment'"
+        v-if="item.status=='needComment'||item.status=='courierCommented'||item.status=='ownerCommented'"
         :visible.sync="dialogVisible"
         :title="'评价'"
       >
@@ -293,12 +307,12 @@ export default {
       // 用户评价快递员
       if (this.type == "needComment") {
         toID = this.courierInfo[index].id;
-        commentType = "o2c";// owner to courier
+        commentType = "o2c"; // owner to courier
       }
       // 快递员评价用户
       else {
         toID = item.uid;
-        commentType = "c2o";// courier to owner
+        commentType = "c2o"; // courier to owner
       }
       fetch("/comment", {
         headers: new Headers({ "Content-Type": "application/json" }),
@@ -339,6 +353,12 @@ export default {
           return 1;
           break;
         case "needComment":
+          return 3;
+          break;
+        case "ownerCommented":
+          return 3;
+          break;
+        case "courierCommented":
           return 3;
           break;
         case "finished":

@@ -14,7 +14,7 @@ const web3js = new web3(new web3.providers.HttpProvider("http://127.0.0.1:7545")
 // 智能合约ABI
 let contractABI = DeliveryRequest.abi;
 // 智能合约地址
-var ExpressContractAdd = '0xa29e9C77A4898b7A5c43a20F68Dd14bDf0D22F71';
+var ExpressContractAdd = '0x91eaF31e7D8d0a30c654295C6797C24C047FC2f1';
 // 智能合约实例
 let expContract = new web3js.eth.Contract(contractABI, ExpressContractAdd);
 
@@ -148,10 +148,10 @@ router.post("/user_confirm", function (req, res) {
                 Promise.all(promiseArray).then(users => {
                     let ownerAddress = users[0].bcAddress;
                     let courierAddress = users[1].bcAddress;
-                    expContract.methods.finishExpress(eid).send({ from: courierAddress, gas: 300000 }, (error, hash) => {
+                    expContract.methods.finishExpress(eid).send({ from: courierAddress }, (error, hash) => {
                         if (!error) {
                             console.log(hash);
-                            expContract.methods.getExpress(eid).call({ from: ownerAddress, gas: 300000 }, (error, result) => {
+                            expContract.methods.getExpress(eid).call({ from: ownerAddress }, (error, result) => {
                                 if (!error) {
                                     console.log(result);
                                     res.status(200).send({ info: "交易完成", status: "success" });
@@ -239,10 +239,10 @@ router.post("/courier_confirm", function (req, res) {
                 Promise.all(promiseArray).then(users => {
                     let ownerAddress = users[0].bcAddress;
                     let courierAddress = users[1].bcAddress;
-                    expContract.methods.finishExpress(eid).send({ from: courierAddress, gas: 300000 }, (error, hash) => {
+                    expContract.methods.finishExpress(eid).send({ from: courierAddress }, (error, hash) => {
                         if (!error) {
                             console.log(hash);
-                            expContract.methods.getExpress(eid).call({ from: ownerAddress, gas: 300000 }, (error, result) => {
+                            expContract.methods.getExpress(eid).call({ from: ownerAddress }, (error, result) => {
                                 if (!error) {
                                     console.log(result);
                                     res.status(200).send({ info: "交易完成", status: "success" });

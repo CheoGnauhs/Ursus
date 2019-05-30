@@ -35,8 +35,42 @@ export default {
                 this.expressList = res;
               }
             });
-            this.getCourierInfo();
-            this.getImgInfo();
+            fetch(
+              "/user_status_expresses?uid=" +
+                this.$route.params.uid +
+                "&status=courierCommented"
+            ).then(res => {
+              if (res.ok) {
+                res.json().then(res => {
+                  res.forEach(e => {
+                    if (e != null) {
+                      this.expressList = res;
+                    }
+                  });
+                  fetch(
+                    "/user_status_expresses?uid=" +
+                      this.$route.params.uid +
+                      "&status=ownerCommented"
+                  ).then(res => {
+                    if (res.ok) {
+                      res.json().then(res => {
+                        res.forEach(e => {
+                          if (e != null) {
+                            this.expressList = res;
+                          }
+                        });
+                        this.getCourierInfo();
+                        this.getImgInfo();
+                      });
+                    } else {
+                      console.log("request error");
+                    }
+                  });
+                });
+              } else {
+                console.log("request error");
+              }
+            });
           });
         } else {
           console.log("request error");

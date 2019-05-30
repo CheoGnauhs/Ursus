@@ -31,7 +31,7 @@ router.get('/contract', function (req, res) {
 // 新建一个合约
 router.post('/contract', function (req, res) {
     let contractABI = DeliveryRequest.abi;
-    var ExpressContractAdd = '0xa29e9C77A4898b7A5c43a20F68Dd14bDf0D22F71';
+    var ExpressContractAdd = '0x91eaF31e7D8d0a30c654295C6797C24C047FC2f1';
     let expContract = new web3js.eth.Contract(contractABI, ExpressContractAdd);
     let fromAddress;
     let toAddress;
