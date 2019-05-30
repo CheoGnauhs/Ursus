@@ -29,7 +29,7 @@ Contract.init(
         },
         // 合约状态
         status: {
-            type: Sequelize.ENUM("delivering", "userCheck", "courierCheck", "finished"),
+            type: Sequelize.ENUM("delivering", "finished"),
             allowNull: false
         }
     },

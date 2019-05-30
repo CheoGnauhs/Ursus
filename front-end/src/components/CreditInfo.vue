@@ -62,7 +62,8 @@ export default {
       fetch("/credit?id=" + this.$route.params.uid).then(res => {
         if (res.ok) {
           res.json().then(res => {
-            this.value = res.value;
+            console.log(res);
+            this.value = res.credit;
           });
         } else {
           console.log("request error");

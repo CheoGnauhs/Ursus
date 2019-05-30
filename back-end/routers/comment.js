@@ -25,6 +25,8 @@ router.get("/comment", function (req, res) {
 
 // 新建一条评论
 router.post("/comment", function (req, res) {
+    let commentType = req.body.commentType;
+    let eid = req.body.eid;
     let data = {
         eid: req.body.eid,
         fromID: req.body.fromID,
@@ -36,34 +38,69 @@ router.post("/comment", function (req, res) {
     Comment.create(
         data
     ).then(comment => {
-        Comment.count(
+        Express.findOne(
             {
                 where:
-                    { eid: comment.getDataValue('eid') }
+                {
+                    eid: eid
+                }
             }
-        ).then(count => {
-            console.log(count);
-            if (count == 2) {
-                Express.update(
-                    { status: "finished" },
-                    {
-                        where:
-                            { eid: comment.getDataValue('eid') }
-                    }
-                ).then(response => {
-                    console.log(response);
-                    res.status(200).send({ comment: comment, status: "success", info: "评论创建完成" })
-                }).catch(err => {
-                    console.log(err);
-                    res.status(400).send(err);
-                })
+        ).then(express => {
+            if (commentType == "c2o") {// courier to owner
+                if (express.getDataValue("status") == "needComment") {
+                    Express.update(
+                        { status: "courierCommented" },
+                        { where: { eid: eid } }
+                    ).then(() => {
+                        console.log("Updated");
+                        res.status(200).send({ status: "success", info: "评论成功" });
+                    }).catch(err => {
+                        console.log(err);
+                        res.status(400).send({ status: "failed", info: "评论失败", error: err });
+                    })
+                }
+                if (express.getDataValue("status") == "ownerCommented") {
+                    Express.update(
+                        { status: "finished" },
+                        { where: { eid: eid } }
+                    ).then(() => {
+                        console.log("Updated");
+                        res.status(200).send({ status: "success", info: "评论成功" });
+                    }).catch(err => {
+                        console.log(err);
+                        res.status(400).send({ status: "failed", info: "评论失败", error: err });
+                    })
+                }
             }
-            else {
-                res.status(200).send({ comment: comment, status: "success", info: "评论创建完成" })
+            if (commentType == "o2c") {// courier to owner
+                if (express.getDataValue("status") == "needComment") {
+                    Express.update(
+                        { status: "ownerCommented" },
+                        { where: { eid: eid } }
+                    ).then(() => {
+                        console.log("Updated");
+                        res.status(200).send({ status: "success", info: "评论成功" });
+                    }).catch(err => {
+                        console.log(err);
+                        res.status(400).send({ status: "failed", info: "评论失败", error: err });
+                    })
+                }
+                if (express.getDataValue("status") == "courierCommented") {
+                    Express.update(
+                        { status: "finished" },
+                        { where: { eid: eid } }
+                    ).then(() => {
+                        console.log("Updated");
+                        res.status(200).send({ status: "success", info: "评论成功" });
+                    }).catch(err => {
+                        console.log(err);
+                        res.status(400).send({ status: "failed", info: "评论失败", error: err });
+                    })
+                }
             }
         }).catch(err => {
             console.log(err);
-            res.status(400).send(err);
+            res.status(400).send({ status: "failed", info: "评论失败", error: err });
         })
     });
 });

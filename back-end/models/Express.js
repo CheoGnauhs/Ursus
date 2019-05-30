@@ -63,7 +63,7 @@ Express.init(
         },
         // 快递当前状态
         status: {
-            type: Sequelize.ENUM('created', 'searching', 'delivering', 'ownerChecked', 'courierChecked', 'needComment', 'finished', 'cancelled'),
+            type: Sequelize.ENUM('created', 'searching', 'delivering', 'ownerChecked', 'courierChecked', 'needComment', 'ownerCommented', 'courierCommented', 'finished', 'cancelled'),
             allowNull: false
         }
     },

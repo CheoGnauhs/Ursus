@@ -47,8 +47,38 @@ export default {
                       this.expressList.push(e);
                     }
                   });
-                  this.getCourierInfo();
-                  this.getImgInfo();
+                  fetch(
+                    "/user_status_contracts?uid=" +
+                      this.$route.params.uid +
+                      "&status=ownerChecked"
+                  ).then(res => {
+                    if (res.ok) {
+                      res.json().then(res => {
+                        res.forEach(e => {
+                          if (e != null) {
+                            this.expressList.push(e);
+                          }
+                        });
+                        fetch(
+                          "/user_status_contracts?uid=" +
+                            this.$route.params.uid +
+                            "&status=courierChecked"
+                        ).then(res => {
+                          if (res.ok) {
+                            res.json().then(res => {
+                              res.forEach(e => {
+                                if (e != null) {
+                                  this.expressList.push(e);
+                                }
+                              });
+                              this.getCourierInfo();
+                              this.getImgInfo();
+                            });
+                          }
+                        });
+                      });
+                    }
+                  });
                 });
               }
             });

@@ -7,7 +7,11 @@
 <script>
 export default {
   name: "app",
-  components: {}
+  components: {},
+  methods: {},
+  mounted() {
+    this.initWeb3();
+  }
 };
 </script>
 

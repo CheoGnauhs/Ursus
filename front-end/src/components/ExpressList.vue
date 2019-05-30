@@ -24,11 +24,11 @@
           <!-- 运送中的快递，用户可以查看定位、确认送达 -->
           <el-button
             @click="confirmCheck(item)"
-            v-if="item.status=='delivering'"
+            v-if="item.status=='delivering'||'courierChecked'"
             type="primary"
           >确认送达</el-button>
           <el-button
-            v-if="item.status=='delivering'"
+            v-if="item.status=='delivering'||'courierChecked'"
             @click="jumpTo('/dashboard/'+$route.params.uid+'/express-location/'+item.eid)"
           >快递定位</el-button>
 
@@ -60,7 +60,7 @@
         <!-- 运送中的快递快递员可以上传凭证和确认送达 -->
         <div v-if="type=='courierProcessing'" class="header-panel">
           <el-button @click="uploadCheck(item)">上传凭证</el-button>
-          <el-button @click="confirmCheck(item)" type="primary">确认送达</el-button>
+          <el-button @click="courierConfirmCheck(item)" type="primary">确认送达</el-button>
         </div>
       </div>
 
@@ -157,12 +157,9 @@
         v-if="(type=='finished'||type=='needComment'||type=='in-process'||type=='courierFinished'||type=='courierProcessing')&&imgInfo.length!=0"
         class="comment-detail"
       >
-        <el-collapse-item title="快递图片" class="pic">
-          <el-image
-            v-for="(pic,i) in imgInfo[index]"
-            :key="i"
-            :src="'http://localhost:9527/ipfs/'+pic.url"
-          ></el-image>
+        <el-collapse-item v-for="(pic,i) in imgInfo[index]" :key="i" title="快递图片" class="pic">
+          <el-image v-if="pic.url!=null" :src="'http://localhost:9527/ipfs/'+pic.url"></el-image>
+          <p v-if="pic.url==null">数据暂缺</p>
         </el-collapse-item>
       </el-collapse>
 
@@ -214,6 +211,24 @@ export default {
     };
   },
   methods: {
+    testContract() {
+      console.log(this.web3js.eth.accounts[0]);
+      console.log(this.ExpressContract);
+      this.ExpressContract.createExpress(
+        9527,
+        {
+          from: this.web3js.eth.accounts[0],
+          value: this.web3.utils.toWei(express.deliveryFee + "", "ether")
+        },
+        (error, hash) => {
+          if (!error) {
+            console.log(hash);
+          } else {
+            this.$message.error("交易失败");
+          }
+        }
+      );
+    },
     uploadCheck(item) {
       this.uploadEID = item.eid;
       this.uploadVisible = true;
@@ -243,9 +258,11 @@ export default {
         }
       });
     },
+    // 跳转至某一路径
     jumpTo(route) {
       this.$router.push(route);
     },
+    // 评论前用户确认
     commentCheck(item, index) {
       if (this.commentInfo.value == 0 || this.commentInfo.comment == "") {
         this.$message.error("评分与评论内容不得为空");
@@ -270,17 +287,18 @@ export default {
           });
         });
     },
+    // 提交评论
     commentSubmit(item, index) {
       let toID, commentType;
       // 用户评价快递员
       if (this.type == "needComment") {
         toID = this.courierInfo[index].id;
-        commentType = "o2c";
+        commentType = "o2c";// owner to courier
       }
       // 快递员评价用户
       else {
         toID = item.uid;
-        commentType = "c2o";
+        commentType = "c2o";// courier to owner
       }
       fetch("/comment", {
         headers: new Headers({ "Content-Type": "application/json" }),
@@ -362,23 +380,36 @@ export default {
     },
     // 提交需求
     submitRequest(express) {
-      fetch("/express", {
-        headers: new Headers({ "Content-Type": "application/json" }),
-        method: "PUT",
-        body: JSON.stringify({ eid: express.eid, status: "searching" })
-      }).then(res => {
-        if (res.ok) {
-          res.json().then(res => {
-            this.$message.success(res.info);
-            this.$router.push("/dashboard/" + this.route.params.uid);
-          });
-        } else {
-          console.log("Request error");
-          this.$message.error("请求出错");
+      this.ExpressContract.createExpress(
+        express.eid,
+        {
+          from: this.web3js.eth.accounts[0],
+          value: this.web3.utils.toWei(express.deliveryFee + "", "ether")
+        },
+        (error, hash) => {
+          if (!error) {
+            fetch("/express", {
+              headers: new Headers({ "Content-Type": "application/json" }),
+              method: "PUT",
+              body: JSON.stringify({ eid: express.eid, status: "searching" })
+            }).then(res => {
+              if (res.ok) {
+                res.json().then(res => {
+                  this.$message.success(res.info);
+                  this.$router.push("/dashboard/" + this.$route.params.uid);
+                });
+              } else {
+                console.log("Request error");
+                this.$message.error("请求出错");
+              }
+            });
+          } else {
+            this.$message.error("交易失败");
+          }
         }
-      });
+      );
     },
-    // 确认收货前确认
+    // 用户确认收货前确认
     confirmCheck(express) {
       this.$confirm(
         "确认要收货吗？确认后以太币将打入对方账户，该操作不可更改。",
@@ -399,22 +430,86 @@ export default {
           });
         });
     },
-    // 确认收货
+    // 用户确认收货
     confirmRequest(express) {
-      fetch("/confirm", {
-        headers: new Headers({ "Content-Type": "application/json" }),
-        method: "POST",
-        body: JSON.stringify({
-          eid: express.eid
-        })
-      }).then(res => {
-        if (res.ok) {
-          this.$message.success(res.info);
-        } else {
-          console.log("request error");
-          this.$message.error("操作失败");
+      this.ExpressContract.ownerCheck(
+        express.eid,
+        {
+          from: this.web3js.eth.accounts[0]
+        },
+        (error, hash) => {
+          if (!error) {
+            fetch("/user_confirm", {
+              headers: new Headers({ "Content-Type": "application/json" }),
+              method: "POST",
+              body: JSON.stringify({
+                eid: express.eid
+              })
+            }).then(res => {
+              if (res.ok) {
+                this.$message.success(res.info);
+                this.$router.push("/dashboard/" + this.$route.params.uid);
+              } else {
+                console.log("request error");
+                this.$message.error("操作失败");
+              }
+            });
+          } else {
+            this.$message.error("交易失败");
+          }
         }
-      });
+      );
+    },
+    // 快递员确认收货前确认
+    courierConfirmCheck(express) {
+      this.$confirm(
+        "确认要收货吗？该操作记录将写入区块链并影响您的信用值",
+        "提示",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }
+      )
+        .then(() => {
+          this.courierConfirmRequest(express);
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消"
+          });
+        });
+    },
+    // 快递员确认收货
+    courierConfirmRequest(express) {
+      this.ExpressContract.expressmanCheck(
+        express.eid,
+        {
+          from: this.web3js.eth.accounts[0]
+        },
+        (error, hash) => {
+          if (!error) {
+            fetch("/courier_confirm", {
+              headers: new Headers({ "Content-Type": "application/json" }),
+              method: "POST",
+              body: JSON.stringify({
+                eid: express.eid
+              })
+            }).then(res => {
+              if (res.ok) {
+                this.$message.success(res.info);
+                this.$router.push("/dashboard/" + this.$route.params.uid);
+              } else {
+                console.log("request error");
+                this.$message.error("操作失败");
+              }
+            });
+          } else {
+            this.$message.error("交易失败");
+          }
+        }
+      );
     },
     // 快递员确认配送前确认
     deliveryCheck(express) {
@@ -439,24 +534,37 @@ export default {
     },
     // 快递员确认配送
     deliveryRequest(express) {
-      fetch("/contract", {
-        headers: new Headers({ "Content-Type": "application/json" }),
-        method: "POST",
-        body: JSON.stringify({
-          eid: express.eid,
-          ownerID: express.uid,
-          courierID: this.$route.params.uid,
-          deliveryFee: express.deliveryFee
-        })
-      }).then(res => {
-        if (res.ok) {
-          res.json().then(res => {
-            this.$message.success(res.info);
-          });
-        } else {
-          this.$message.error("操作失败");
+      this.ExpressContract.findExpressman(
+        express.eid,
+        {
+          from: this.web3js.eth.accounts[0]
+        },
+        (error, hash) => {
+          if (!error) {
+            fetch("/contract", {
+              headers: new Headers({ "Content-Type": "application/json" }),
+              method: "POST",
+              body: JSON.stringify({
+                eid: express.eid,
+                ownerID: express.uid,
+                courierID: this.$route.params.uid,
+                deliveryFee: express.deliveryFee
+              })
+            }).then(res => {
+              if (res.ok) {
+                res.json().then(res => {
+                  this.$message.success(res.info);
+                  this.$router.push("/courier/" + this.$route.params.uid);
+                });
+              } else {
+                this.$message.error("操作失败");
+              }
+            });
+          } else {
+            this.$message.error("交易失败");
+          }
         }
-      });
+      );
     },
     // 用户取消需求前确认
     cancelCheck(express) {
@@ -485,7 +593,7 @@ export default {
         if (res.ok) {
           res.json().then(res => {
             this.$message.success(res.info);
-            this.$router.push("/dashboard/" + this.route.params.uid);
+            this.$router.push("/dashboard/" + this.$route.params.uid);
           });
         } else {
           console.log("Request error");

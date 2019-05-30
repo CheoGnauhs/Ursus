@@ -34,15 +34,20 @@ contract ExpressContract{
         _;
     }
     
-    //init a new express
-    function init(uint _id, address payable _expressman) payable public returns(string memory info) {
+    // Create a new express
+    function createExpress(uint _id) payable public returns(string memory info) {
         expresses[_id].id = _id;
         expresses[_id].owner = msg.sender;
-        expresses[_id].expressman = _expressman;
         expresses[_id].owner_checked = false;
         expresses[_id].expressman_checked = false;
         expresses[_id].cost = msg.value;
         return "Init success.";
+    }
+    
+    // Find a courier for an express
+    function findExpressman(uint _id) public returns(string memory info){
+        expresses[_id].expressman = msg.sender;
+        return "Expressman associated.";
     }
     
     // Get express info

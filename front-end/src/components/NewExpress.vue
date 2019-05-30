@@ -148,9 +148,7 @@ export default {
         if (res.ok) {
           res.json().then(res => {
             this.$message.success(res.info);
-            this.$router.push(
-              "/dashboard/" + this.$route.params.id + "/unsubmitted"
-            );
+            this.$router.push("/dashboard/" + this.$route.params.id);
           });
         }
       });

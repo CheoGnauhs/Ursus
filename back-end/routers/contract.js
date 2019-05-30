@@ -31,7 +31,7 @@ router.get('/contract', function (req, res) {
 // 新建一个合约
 router.post('/contract', function (req, res) {
     let contractABI = DeliveryRequest.abi;
-    var ExpressContractAdd = '0x07dB558bc86B7105daBF6710E228C1FA51e8F6D6';
+    var ExpressContractAdd = '0xa29e9C77A4898b7A5c43a20F68Dd14bDf0D22F71';
     let expContract = new web3js.eth.Contract(contractABI, ExpressContractAdd);
     let fromAddress;
     let toAddress;
@@ -57,50 +57,14 @@ router.post('/contract', function (req, res) {
             }
         )
     )
-    promiseArray.push(
-        User.findOne(
-            {
-                where: {
-                    id: req.body.ownerID
-                }
-            }
-        )
-    );
-    promiseArray.push(
-        User.findOne(
-            {
-                where: {
-                    id: req.body.courierID
-                }
-            }
-        )
-    );
     Promise.all(promiseArray).then(values => {
-        fromAddress = values[2].bcAddress;
-        toAddress = values[3].bcAddress;
-        console.log(fromAddress);
-        console.log(toAddress);
-        expContract.methods.init(req.body.eid, toAddress).send({ from: fromAddress, gas: 300000, value: web3js.utils.toWei(req.body.deliveryFee + '', 'ether') }, (error, hash) => {
-            if (!error)
-                console.log(hash);
-            else {
-                console.log(error);
-                res.send(error);
-            }
-            //回调函数中去看结果
-            expContract.methods.getExpress(req.body.eid).call({ from: fromAddress, gas: 300000 }, (error, result) => {
-                if (!error) {
-                    console.log(result);
-                    res.send({ status: "success", info: "智能合约建立完毕" });
-                }
-                else {
-                    console.log(error);
-                    res.send(error);
-                }
-            });
+        values.forEach(e => {
+            console.log(e);
         })
+        res.status(200).send({ status: "success", info: "创建成功" });
     }).catch(error => {
         console.log(error)
+        res.status(400).send({ status: "failed", info: "创建失败", error: error });
     });
 });
 

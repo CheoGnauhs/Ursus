@@ -181,17 +181,17 @@ export default {
               if (res.ok) {
                 res.json().then(res => {
                   console.log(res);
+                  this.$message.success("注册成功");
+                  if (this.regInfo.type == "owner") {
+                    this.$router.push("/dashboard/" + res.id);
+                  } else {
+                    this.$router.push("/courier/" + res.id);
+                  }
                 });
               } else {
                 console.log("request error");
               }
             });
-            this.$message.success("注册成功");
-            if (this.regInfo.type == "owner") {
-              this.$router.push("/dashboard/" + res.id);
-            } else {
-              this.$router.push("/courier/" + res.id);
-            }
           });
         } else {
           this.isLoading = false;

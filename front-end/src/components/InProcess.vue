@@ -45,8 +45,34 @@ export default {
                   res.forEach(e => {
                     this.expressList.push(e);
                   });
-                  this.getCourierInfo();
-                  this.getImgInfo();
+                  fetch(
+                    "/user_status_expresses?uid=" +
+                      this.$route.params.uid +
+                      "&status=ownerChecked"
+                  ).then(res => {
+                    if (res.ok) {
+                      res.json().then(res => {
+                        res.forEach(e => {
+                          this.expressList.push(e);
+                        });
+                        fetch(
+                          "/user_status_expresses?uid=" +
+                            this.$route.params.uid +
+                            "&status=courierChecked"
+                        ).then(res => {
+                          if (res.ok) {
+                            res.json().then(res => {
+                              res.forEach(e => {
+                                this.expressList.push(e);
+                              });
+                              this.getCourierInfo();
+                              this.getImgInfo();
+                            });
+                          }
+                        });
+                      });
+                    }
+                  });
                 });
               }
             });
