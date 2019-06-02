@@ -170,12 +170,12 @@ export default {
       }).then(res => {
         console.log(res.ok);
         if (res.ok) {
-          res.json().then(res => {
+          res.json().then(response => {
             fetch("/location", {
               headers: new Headers({ "Content-Type": "application/json" }),
               method: "POST",
               body: JSON.stringify({
-                uid: res.id
+                uid: response.id
               })
             }).then(res => {
               if (res.ok) {
@@ -183,9 +183,9 @@ export default {
                   console.log(res);
                   this.$message.success("注册成功");
                   if (this.regInfo.type == "owner") {
-                    this.$router.push("/dashboard/" + res.id);
+                    this.$router.push("/dashboard/" + response.id);
                   } else {
-                    this.$router.push("/courier/" + res.id);
+                    this.$router.push("/courier/" + response.id);
                   }
                 });
               } else {

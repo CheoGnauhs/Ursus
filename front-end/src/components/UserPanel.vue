@@ -22,7 +22,7 @@
           <el-button @click="jumpTo('/in-process')" type="text">正在进行中</el-button>
         </el-badge>
       </span>
-      <span class="badge-holder" v-if="userInfo.type!='courier'">
+      <span class="badge-holder">
         <el-badge :value="expressNum.unsubmitted" :hidden="expressNum.unsubmitted==0">
           <el-button @click="jumpTo('/unsubmitted')" type="text">未提交</el-button>
         </el-badge>
@@ -64,11 +64,7 @@ export default {
   },
   methods: {
     jumpTo(route) {
-      if (this.userInfo.type == "owner") {
-        this.$router.push("/dashboard/" + this.userInfo.id + route);
-      } else {
-        this.$router.push("/courier/" + this.userInfo.id + route);
-      }
+      this.$router.push("/dashboard/" + this.userInfo.id + route);
     },
     getUserInfo() {
       fetch("/user?id=" + this.id).then(res => {

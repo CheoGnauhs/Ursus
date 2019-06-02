@@ -7,7 +7,7 @@ contract ExpressContract{
         bool owner_checked; //whether owner is checked
         bool expressman_checked; //whether expressman is checked
         address payable owner; // owner of express
-        address payable expressman; // expressmanof express
+        address payable expressman; // expressman of express
         uint cost; // pay for expressman
     }
     

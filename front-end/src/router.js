@@ -18,6 +18,7 @@ import Cancelled from "./components/Cancelled";
 import CourierInProcess from "./components/CourierInProcess";
 import CourierNeedComment from "./components/CourierNeedComment";
 import CourierFinished from "./components/CourierFinished";
+import CourierUserPanel from "./components/CourierUserPanel";
 
 const router = new VueRouter(
 	{
@@ -87,7 +88,7 @@ const router = new VueRouter(
 				children: [
 					{
 						path: "",
-						component: UserPanel
+						component: CourierUserPanel
 					},
 					{
 						path: "get-new-express",

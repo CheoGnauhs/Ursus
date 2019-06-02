@@ -46,7 +46,7 @@ class ExpressNum extends Sequelize.Model {
             {
                 where: {
                     uid: uid,
-                    status: "needComment"
+                    status: { [Sequelize.Op.or]: ['needComment', 'ownerCommented', 'courierCommented'] }
                 }
             }
         ).then(res => {

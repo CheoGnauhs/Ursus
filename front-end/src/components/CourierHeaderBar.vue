@@ -25,9 +25,8 @@
           ></v-gravatar>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item :command="'/courier/'+userInfo.id+'/user-info'">个人资料</el-dropdown-item>
-            <el-dropdown-item :command="'/courier/'+userInfo.id+'/block-info'">区块信息</el-dropdown-item>
             <el-dropdown-item :command="'/courier/'+userInfo.id+'/credit-info'">信用信息</el-dropdown-item>
-            <el-dropdown-item divided>退出登录</el-dropdown-item>
+            <el-dropdown-item :command="'/'" divided>退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>

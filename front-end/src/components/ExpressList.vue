@@ -13,7 +13,7 @@
       <!-- 快递基本信息以及对应操作按钮 -->
       <div slot="header" class="detail-header">
         <div class="header-info">
-          <el-tag type="success">快递单号：{{item.eid}}</el-tag>
+          <el-tag v-if="type!='newExpress'" type="success">快递单号：{{item.eid}}</el-tag>
           <el-tag type="warning">快递物品：{{item.content}}</el-tag>
           <el-tag type="info">订单日期：{{item.createdAt.split('T')[0]}}</el-tag>
         </div>
@@ -117,7 +117,7 @@
       <el-dialog
         v-if="item.status=='needComment'||item.status=='courierCommented'||item.status=='ownerCommented'"
         :visible.sync="dialogVisible"
-        :title="'评价'"
+        :title="'评价单号：'+item.eid"
       >
         <el-form :model="commentInfo">
           <el-form-item label="评分">
@@ -138,12 +138,12 @@
         v-if="type=='courierProcessing'&&item.status=='delivering'"
         title="上传附件"
         :visible.sync="uploadVisible"
+        :on-preview="handlePictureCardPreview"
       >
         <el-upload
           action="/postfile"
           list-type="picture-card"
           :on-preview="handlePictureCardPreview"
-          :on-remove="handleRemove"
           :on-success="handleUploadSuccess"
         >
           <i class="el-icon-plus"></i>
@@ -246,9 +246,6 @@ export default {
     uploadCheck(item) {
       this.uploadEID = item.eid;
       this.uploadVisible = true;
-    },
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
     },
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url;
