@@ -20,10 +20,6 @@ Notification.init(
         content: {
             type: Sequelize.STRING,
         },
-        // 时间戳
-        timestamp: {
-            type: Sequelize.timestamp,
-        },
         // 是否已读
         isRead: {
             type: Sequelize.BOOLEAN

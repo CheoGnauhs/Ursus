@@ -11,9 +11,15 @@
         ></v-gravatar>
         <span class="text">{{userInfo.realname}}</span>
       </span>
-      <span class="text">
-        钱包地址:
-        <el-tag type="warning">{{userInfo.bcAddress}}</el-tag>
+      <span>
+        <span class="text">
+          钱包余额:
+          <el-tag type="error">{{ethBalance}}以太币</el-tag>
+        </span>
+        <span class="text">
+          钱包地址:
+          <el-tag type="warning">{{userInfo.bcAddress}}</el-tag>
+        </span>
       </span>
     </div>
     <div class="control-panel">
@@ -59,7 +65,8 @@ export default {
         telephone: "",
         bcAddress: "",
         type: ""
-      }
+      },
+      ethBalance: 0
     };
   },
   methods: {
@@ -95,12 +102,24 @@ export default {
           console.log("request error");
         }
       });
+    },
+    getBalance() {
+      fetch("/balance?id=" + this.$route.params.uid).then(res => {
+        if (res.ok) {
+          res.json().then(res => {
+            this.ethBalance = parseFloat(res.balance).toFixed(2);
+          });
+        } else {
+          console.log("request error");
+        }
+      });
     }
   },
   mounted() {
     this.id = this.$route.params.uid;
     this.getUserInfo();
     this.getExpressCount();
+    this.getBalance();
   }
 };
 </script>

@@ -19,6 +19,7 @@ import CourierInProcess from "./components/CourierInProcess";
 import CourierNeedComment from "./components/CourierNeedComment";
 import CourierFinished from "./components/CourierFinished";
 import CourierUserPanel from "./components/CourierUserPanel";
+import CustomerInfo from "./components/CustomerInfo";
 
 const router = new VueRouter(
 	{
@@ -117,6 +118,10 @@ const router = new VueRouter(
 					{
 						path: "notifications",
 						component: Notifications
+					},
+					{
+						path: "customer-info/:eid",
+						component: CustomerInfo
 					}
 				]
 			}

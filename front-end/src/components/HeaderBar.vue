@@ -10,7 +10,7 @@
           :style="{'margin-right': '15px'}"
           type="text"
         >首页</el-button>
-        <el-badge value="0" :hidden="true">
+        <el-badge :value="count" :hidden="count==0">
           <el-button @click="jumpTo('/dashboard/'+userInfo.id+'/notifications')" size="small">消息</el-button>
         </el-badge>
       </div>
@@ -43,7 +43,8 @@ export default {
   components: { DisplayPanel },
   data() {
     return {
-      id: ""
+      id: "",
+      count: 0
     };
   },
   methods: {
@@ -54,6 +55,15 @@ export default {
       // eslint-disable-next-line
       console.log(command);
       this.$router.push(command);
+    },
+    getUnreadNotificationCount() {
+      fetch("/unread_notifications_count?uid=" + userInfo.id).then(res => {
+        if (res.ok) {
+          res.json().then(res => {
+            this.count = res.count;
+          });
+        }
+      });
     }
   },
   mounted() {}

@@ -68,7 +68,8 @@
 
         <!-- 运送中的快递快递员可以上传凭证和确认送达 -->
         <div v-if="type=='courierProcessing'" class="header-panel">
-          <el-button v-if="item.status=='delivering'" @click="uploadCheck(item)">上传凭证</el-button>
+          <el-button v-if="item.status=='delivering'" @click="getUserInfo(item)">客户信息</el-button>
+          <el-button v-if="item.status=='delivering'" @click="uploadCheck(item,index)">上传凭证</el-button>
           <el-button
             v-if="item.status=='delivering'||item.status=='ownerChecked'"
             @click="courierConfirmCheck(item)"
@@ -137,7 +138,7 @@
       <el-dialog
         v-if="type=='courierProcessing'&&item.status=='delivering'"
         title="上传附件"
-        :visible.sync="uploadVisible"
+        :visible.sync="dialogVisible"
         :on-preview="handlePictureCardPreview"
       >
         <el-upload
@@ -225,6 +226,9 @@ export default {
     };
   },
   methods: {
+    getUserInfo(item) {
+      this.jumpTo("customer-info/" + item.eid);
+    },
     testContract() {
       console.log(this.web3js.eth.accounts[0]);
       console.log(this.ExpressContract);
@@ -243,13 +247,13 @@ export default {
         }
       );
     },
-    uploadCheck(item) {
+    uploadCheck(item, index) {
       this.uploadEID = item.eid;
-      this.uploadVisible = true;
+      this.dialogVisible = true;
     },
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url;
-      this.dialogVisible = true;
+      this.imageVisible = true;
     },
     handleUploadSuccess(response, file, fileList) {
       fetch("/attachment", {

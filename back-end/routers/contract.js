@@ -4,6 +4,7 @@ const web3 = require('web3');
 const fs = require('fs');
 const Contract = require('../models/Contract');
 const Express = require('../models/express');
+const Notification = require("../models/Notification");
 const User = require('../models/User');
 
 // 智能合约路径
@@ -61,7 +62,23 @@ router.post('/contract', function (req, res) {
         values.forEach(e => {
             console.log(e);
         })
-        res.status(200).send({ status: "success", info: "创建成功" });
+        Notification.bulkCreate(
+            [
+                {
+                    uid: req.body.ownerID,
+                    content: "您的快递已被快递员接受。",
+                    isRead: false
+                },
+                {
+                    uid: req.body.courierID,
+                    content: "您已成功接受快递。",
+                    isRead: false
+                }
+            ]
+        ).then(notifications => {
+            console.log(notifications);
+            res.status(200).send({ status: "success", info: "创建成功" });
+        })
     }).catch(error => {
         console.log(error)
         res.status(400).send({ status: "failed", info: "创建失败", error: error });

@@ -27,6 +27,6 @@ router.get("/credit", function (req, res) {
         console.log(err);
         res.status(400).send(err);
     })
-})
+});
 
 module.exports = router;

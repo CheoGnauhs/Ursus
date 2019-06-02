@@ -5,6 +5,7 @@ const router = require('express').Router();
 const Contract = require('../models/Contract');
 const Express = require('../models/express');
 const User = require('../models/User');
+const Notification = require('../models/Notification');
 
 // 智能合约路径
 var ExpressContractFile = "../build/contracts/ExpressContract.json";
